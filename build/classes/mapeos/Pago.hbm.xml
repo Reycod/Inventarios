@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="mapeos.Pago" table="pago">
+        <id name="id" type="integer">
+            <column name="idpago"/>
+            <generator class="identity"/>
+        </id>
+        <property name="tipo" type="string" column="tipo"/>
+        <property name="codigo" type="string"  column="codigo"/>
+        
+        <set name="compras" table="compra" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pago_idpago"/>
+            </key>
+            <one-to-many class="mapeos.Compra" />
+        </set>
+        
+    </class>
+</hibernate-mapping>

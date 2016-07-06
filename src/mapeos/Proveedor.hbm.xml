@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Proveedor" table="proveedor" catalog="sysinventory">
+        <id name="idproveedor" type="java.lang.Integer">
+            <column name="idproveedor" />
+            <generator class="identity" />
+        </id>
+        <property name="nit" type="string">
+            <column name="nit" length="45" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="45" />
+        </property>
+        <property name="nrofax" type="string">
+            <column name="nrofax" length="45" />
+        </property>
+        <property name="web" type="string">
+            <column name="web" length="45" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="45" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="45" />
+        </property>
+        <property name="estado" type="string">
+            <column name="estado" length="45" />
+        </property>
+        <property name="contacto" type="string">
+            <column name="contacto" length="45" />
+        </property>
+        <property name="fonoContacto" type="integer">
+            <column name="fonocontacto"/>
+        </property>
+        
+        <set name="compras" table="compra" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="proveedor_idproveedor" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Compra" />
+        </set>
+        
+        <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="proveedor_idproveedor" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Producto" />
+        </set>  
+        
+    </class>
+</hibernate-mapping>

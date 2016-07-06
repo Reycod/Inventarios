@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Persona" table="persona" catalog="sysinventory">
+        <id name="idpersona" type="java.lang.Integer">
+            <column name="idpersona" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="appaterno" type="string">
+            <column name="appaterno" length="45" />
+        </property>
+        <property name="apmaterno" type="string">
+            <column name="apmaterno" length="45" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="45" />
+        </property>
+        <property name="cedula" type="string">
+            <column name="cedula" length="45" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="45" />
+        </property>
+        <property name="estado" type="string">
+            <column name="estado" length="45" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <set name="usuarios" table="usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="persona_idpersona" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Usuario" />
+        </set>
+    </class>
+</hibernate-mapping>

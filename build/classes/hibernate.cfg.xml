@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sysinventory?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.show_sql">true</property>
+    <mapping resource="mapeos/Ajustes.hbm.xml"/>
+    <mapping resource="mapeos/Informacion.hbm.xml"/>
+    <mapping resource="mapeos/Inventario.hbm.xml"/>
+    <mapping resource="mapeos/DetalleCompra.hbm.xml"/>
+    <mapping resource="mapeos/Usuario.hbm.xml"/>
+    <mapping resource="mapeos/Cliente.hbm.xml"/>
+    <mapping resource="mapeos/Compra.hbm.xml"/>
+    <mapping resource="mapeos/Privilegio.hbm.xml"/>
+    <mapping resource="mapeos/Pago.hbm.xml"/>
+    <mapping resource="mapeos/Almacen.hbm.xml"/>
+    <mapping resource="mapeos/Producto.hbm.xml"/>
+    <mapping resource="mapeos/Proveedor.hbm.xml"/>
+    <mapping resource="mapeos/UnidadMedida.hbm.xml"/>
+    <mapping resource="mapeos/Categoria.hbm.xml"/>
+    <mapping resource="mapeos/Fifo.hbm.xml"/>
+    <mapping resource="mapeos/Factura.hbm.xml"/>
+    <mapping resource="mapeos/Encargado.hbm.xml"/>
+    <mapping resource="mapeos/Detallefactura.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

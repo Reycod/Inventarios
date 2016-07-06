@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Factura" table="factura" catalog="sysinventory">
+        <id name="idfactura" type="java.lang.Integer">
+            <column name="idfactura" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cliente" class="mapeos.Cliente" fetch="select">
+            <column name="cliente_idcliente" not-null="true" />
+        </many-to-one>
+        <property name="nrofactura" type="string">
+            <column name="nrofactura" length="45" />
+        </property>
+        <property name="codigocliente" type="string">
+            <column name="codigocliente" length="45" />
+        </property>
+        <property name="nrocliente" type="string">
+            <column name="nrocliente" length="45" />
+        </property>
+        <property name="subtotal" type="string">
+            <column name="subtotal" length="45" />
+        </property>
+        <property name="iva" type="string">
+            <column name="iva" length="45" />
+        </property>
+        <property name="total" type="string">
+            <column name="total" length="45" />
+        </property>
+        <property name="fechafactura" type="string">
+            <column name="fechafactura" length="45" />
+        </property>
+        <set name="detallefacturas" table="detallefactura" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="factura_idfactura" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Detallefactura" />
+        </set>
+    </class>
+</hibernate-mapping>

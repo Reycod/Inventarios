@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Encargado" table="encargado" catalog="sysinventory">
+        
+        <id name="idencargado" type="java.lang.Integer">
+            <column name="idencargado" />
+            <generator class="identity" />
+        </id>
+        
+        <many-to-one name="usuario" class="mapeos.Usuario" fetch="select">
+            <column name="usuario_idusuario" not-null="true" />
+        </many-to-one>
+        
+        <!--<set name="almacens" table="almacen" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="encargado_idencargado" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Almacen"/>
+        </set>-->
+        
+        <many-to-one name="almacens" class="mapeos.Almacen" fetch="select">
+            <column name="almacen_idalmacen" not-null="true" />
+        </many-to-one>
+        
+    </class>
+</hibernate-mapping>

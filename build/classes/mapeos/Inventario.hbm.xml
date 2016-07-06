@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+
+<hibernate-mapping>
+    <class name="mapeos.Inventario" table="inventario" catalog="sysinventory">
+        
+        <id name="idinventario" type="java.lang.Integer">
+            <column name="idinventario" />
+            <generator class="identity" />
+        </id>
+        
+        <property name="stock" type="string">
+            <column name="stock" length="45" />
+        </property>
+        
+        <!--<property name="fecha">
+            <column name="fecha"/>
+        </property>
+        -->
+        <property name="almacen_idalmacen" type="integer">
+            <column name="almacen_idalmacen"/>
+        </property>
+        
+        <property name="producto_idproducto" type="integer">
+            <column name="producto_idproducto"/>
+        </property>
+        
+        <property name="tipoInventario" type="integer">
+            <column name="tipoInv"/>
+        </property>
+        
+        
+        <set name="fifos" table="fifo" inverse="true" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="inventario_idinventario" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Fifo" />
+        </set>
+        
+    </class>
+</hibernate-mapping>

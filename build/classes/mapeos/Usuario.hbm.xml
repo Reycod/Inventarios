@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Usuario" table="usuario" catalog="sysinventory">
+        <id name="idusuario" type="java.lang.Integer">
+            <column name="idusuario" />
+            <generator class="identity" />
+        </id>
+        <property name="ci" type="integer" column="ci"/>
+        <property name="nombre" type="string" column="nombre"/>
+        <property name="apellido" type="string" column="apellido"/>
+        <property name="password" type="string">
+            <column name="password" length="45" />
+        </property>
+        <property name="cargo" type="string" column="cargo"/>
+        <property name="alias" type="string">
+            <column name="alias" length="45" />
+        </property>
+        <property name="telefono" type="integer" column="telefono"/>
+        <property name="estado" type="string">
+            <column name="estado" length="45" />
+        </property>
+         <property name="imagen" type="binary">
+            <column name="imagen" />
+        </property>
+        
+        <set name="privilegios" table="privilegio" inverse="true" cascade="all" lazy="true" fetch="select">
+            <key>
+                <column name="idUsuario"/>
+            </key>
+            <one-to-many class="mapeos.Privilegio" />
+        </set> 
+        
+    </class>
+</hibernate-mapping>

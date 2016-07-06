@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Detallefactura" table="detallefactura" catalog="sysinventory">
+        <id name="iddetallefactura" type="java.lang.Integer">
+            <column name="iddetallefactura" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="producto" class="mapeos.Producto" fetch="select">
+            <column name="producto_idproducto" not-null="true" />
+        </many-to-one>
+        <many-to-one name="factura" class="mapeos.Factura" fetch="select">
+            <column name="factura_idfactura" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="45" />
+        </property>
+        <property name="cantidad" type="string">
+            <column name="cantidad" length="45" />
+        </property>
+        <property name="preciounitario" type="string">
+            <column name="preciounitario" length="45" />
+        </property>
+        <property name="preciototal" type="string">
+            <column name="preciototal" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

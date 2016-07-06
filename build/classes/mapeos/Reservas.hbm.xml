@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Reservas" table="reservas" catalog="sysinventory">
+        <id name="idreservas" type="java.lang.Integer">
+            <column name="idreservas" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="inventario" class="mapeos.Inventario" fetch="select">
+            <column name="inventario_idinventario" not-null="true" />
+        </many-to-one>
+        <property name="estado" type="string">
+            <column name="estado" length="45" />
+        </property>
+        <property name="solicitante" type="string">
+            <column name="solicitante" length="45" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" length="45" />
+        </property>
+        <property name="cantidad" type="string">
+            <column name="cantidad" length="45" />
+        </property>
+        <property name="fecha" type="string">
+            <column name="fecha" length="45" />
+        </property>
+        <property name="limitereserva" type="string">
+            <column name="limitereserva" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Producto" table="producto" catalog="sysinventory">
+        <id name="idproducto" type="java.lang.Integer">
+            <column name="idproducto" />
+            <generator class="identity" />
+        </id>
+        
+        <many-to-one name="categoria" class="mapeos.Categoria" fetch="select">
+            <column name="categoria_idcategoria" not-null="true" />
+        </many-to-one>
+        
+        <many-to-one name="proveedor" class="mapeos.Proveedor" fetch="select">
+            <column name="proveedor_ideproveedor" not-null="true" />
+        </many-to-one>
+        
+        <many-to-one name="unidadMedida" class="mapeos.UnidadMedida" fetch="select">
+            <column name="unidadmedida_idunidadmedida" not-null="true" />
+        </many-to-one>
+        
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="150" />
+        </property>
+        <property name="marca" type="string">
+            <column name="marca" length="45" />
+        </property>
+        <property name="precio" type="string">
+            <column name="precio" />
+        </property>
+        <property name="codigoproducto" type="string">
+            <column name="codigoproducto" length="45" />
+        </property>
+        <property name="estado" type="string">
+            <column name="estado" length="45" />
+        </property>
+        <property name="imagen" type="binary">
+            <column name="imagen" />
+        </property>
+        
+        <property name="stockMinimo" type="integer" column="stock_minimo"/>
+        <property name="stockMaximo" type="integer" column="stock_maximo"/>
+        
+        
+        <set name="inventarios" table="inventario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="producto_idproducto" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Inventario" />
+        </set>
+        
+        <set name="detallefacturas" table="detallefactura" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="producto_idproducto" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Detallefactura" />
+        </set>
+        
+        <set name="detallecompra" table="detallecompra" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="producto_idproducto" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Detallecompra" />
+        </set>
+        
+    </class>
+</hibernate-mapping>

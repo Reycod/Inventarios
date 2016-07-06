@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+  
+<hibernate-mapping>
+    <class name="mapeos.Detallecompra" table="detallecompra" catalog="sysinventory">
+        <id name="iddetallecompra" type="integer" column="iddetallecompra">
+            <generator class="identity"/>
+        </id>
+        <property name="cantidad" type="string" column="cantidad"/>
+        <property name="produto_idproducto" type="integer" column="producto_idproducto"/>
+        <property name="estado" type="string" column="estado"/>
+        <property name="precioCompra" type="string" column="precioCompra"/>
+        
+        <many-to-one name="compra" class="mapeos.Compra" fetch="select" >
+            <column name="compra_idcompra"/>
+        </many-to-one>
+        
+    </class>
+</hibernate-mapping>

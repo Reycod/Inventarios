@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Compra" table="compra" catalog="sysinventory">
+        <id name="idcompra" type="java.lang.Integer">
+            <column name="idcompra" />
+            <generator class="identity" />
+        </id>
+          
+        <many-to-one name="pago" class="mapeos.Pago" fetch="select">
+            <column name="pago_idpago" not-null="true" />
+        </many-to-one>
+        
+        <property name="fecha">
+            <column name="fecha"/>
+        </property>
+        <property name="fechaemtrega">
+            <column name="fechaentrega"/>
+        </property>
+        <property name="preciototal">
+            <column name="preciototal" />
+        </property>
+        <property name="codigo" type="string">
+            <column name="codigo" length="45" />
+        </property>
+        <property name="estado" type="string">
+            <column name="estado" length="45" />
+        </property>
+        <property name="ncotizacion" column="ncotizacion"/>
+        <property name="responsable" column="responsable"/>
+        
+        <property name="responsableRecepcion" column="responsableRecepcion"/>
+        <property name="fechaRecepcion" column="fechaRecepcion"/>
+        <property name="tipoDocumento" column="tipoDocumento"/>
+        <property name="numeroDocumento" column="numeroDocumento"/>
+        <property name="obsRecepcion" column="obsRecepcion"/>
+        
+        
+        
+        <set name="detalleCompra" table="detallecompra" inverse="true" cascade="all" lazy="true" fetch="select">
+            <key>
+                <column name="compra_idcompra"/>
+            </key>
+            <one-to-many class="mapeos.Detallecompra" />
+        </set> 
+        
+        
+    </class>
+</hibernate-mapping>

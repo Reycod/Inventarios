@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="mapeos.Ajustes" table="ajustes">
+        <id name="idajuste" column="idajustes" type="integer">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" column="fecha"/>
+        <property name="cantidad" column="cantidad"/>
+        <property name="cantidadA" column="cantidadA"/>
+        <property name="detalle" column="detalle"/>
+        <property name="responsable" column="responsable"/>
+        <property name="idproducto" column="idproducto"/>
+        <property name="precio" column="precio"/>
+        <property name="precioA" column="precioA"/>
+        <property name="idalmacen" column="idalmacen"/>
+        
+    </class>
+  
+</hibernate-mapping>

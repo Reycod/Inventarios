@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Fifo" table="fifo" catalog="sysinventory">
+        <id name="idfifo" type="java.lang.Integer">
+            <column name="idfifo" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="inventario" class="mapeos.Inventario" fetch="select">
+            <column name="inventario_idinventario" not-null="true" />
+        </many-to-one>
+        
+        <property name="fecha" type="string">
+            <column name="fecha" length="45" />
+        </property>
+        <property name="detalle" type="string">
+            <column name="detalle" length="300" />
+        </property>
+        
+        <property name="cant_entrada" type="integer">
+            <column name="cantidadentrada"/>
+        </property>
+        <property name="precio_entrada" type="string">
+            <column name="precioentrada" length="45" />
+        </property>
+        <property name="p_total_entrada" type="string">
+            <column name="ptotalentrada" length="20" />
+        </property>
+        
+        <property name="cant_salida" type="integer">
+            <column name="cantidadsalida"/>
+        </property>
+        <property name="precio_salida" type="string">
+            <column name="preciosalida" length="45" />
+        </property>
+        <property name="p_total_salida" type="string">
+            <column name="ptotalsalida" length="20" />
+        </property>
+        
+        <property name="cant_saldo" type="integer">
+            <column name="cantSaldo"/>
+        </property>
+        <property name="precio_saldo" type="string">
+            <column name="preciosaldo" length="20" />
+        </property>
+        <property name="p_total_saldo" type="string">
+            <column name="ptotalsaldo" length="20" />
+        </property>
+        
+        <property name="documento" type="string">
+            <column name="documento" length="45" />
+        </property>
+        <property name="ndocumento" type="integer">
+            <column name="ndocumento"/>
+        </property>
+        
+        
+    </class>
+</hibernate-mapping>

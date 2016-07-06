@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-02-2016 05:32:09 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="mapeos.Informacion" table="informacion" catalog="sysinventory">
+        <id name="idinformacion" type="java.lang.Integer">
+            <column name="idinformacion" />
+            <generator class="identity" />
+        </id>
+        <property name="razonsocial" type="string">
+            <column name="razonsocial" length="45" />
+        </property>
+        <property name="nit" type="string">
+            <column name="nit" length="45" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="45" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="45" />
+        </property>
+        <property name="ciudad" type="string">
+            <column name="ciudad" length="45" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <property name="fax" type="string">
+            <column name="fax" length="45" />
+        </property>
+        <property name="logo" type="binary">
+            <column name="logo"/>
+        </property>
+        <property name="web" type="string">
+            <column name="web" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

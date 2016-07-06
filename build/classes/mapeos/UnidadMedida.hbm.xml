@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="mapeos.UnidadMedida" table="unidadmedida" catalog="sysinventory">
+        <id name="idunidadmedida">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property name="nombre" column="nombre" type="string"/>
+        <property name="abreviacion" column="abreviacion" type="string"/>
+        
+        <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="unidadmedida_idunidadmedida" not-null="true" />
+            </key>
+            <one-to-many class="mapeos.Producto" />
+        </set>
+    </class>
+</hibernate-mapping>
