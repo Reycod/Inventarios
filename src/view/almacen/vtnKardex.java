@@ -95,7 +95,8 @@ public class vtnKardex extends javax.swing.JInternalFrame {
             for (int i = 0; filas > i; i++) {
                 modelo.removeRow(0);
             }
-        } catch (Exception e) {
+        } catch (Exception e) 
+        {
             JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
         }
     }
@@ -215,7 +216,7 @@ public class vtnKardex extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("KARDEX INVENTARIO ");
+        jLabel1.setText("KARDEX INVENTARIOS ");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/kardexInventario.png"))); // NOI18N
 

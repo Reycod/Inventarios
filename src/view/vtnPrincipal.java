@@ -5,25 +5,28 @@
  */
 package view;
 
-import view.OC.vtnListarCompras;
-import view.OC.vtnOD;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import view.almacen.vtnInventarioInicial;
 import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import util.ContadorPanelActividad;
+import view.OC.vtnListarCompras;
+import view.OC.vtnOD;
 import view.almacen.vtnAjustes;
 import view.almacen.vtnIngresoalmacen;
+import view.almacen.vtnInventarioInicial;
 import view.almacen.vtnKardex;
 import view.almacen.vtnKardexInventario;
 import view.licencias.vtnAcercade;
 import view.reporteCompras.vtnReporteCompras;
 import view.usuarios.vtnUsuarios;
 import view.usuarios.vtngestionPersmisos;
+import view.ventas.vtnComboProducto;
+import view.ventas.vtnVentas;
+
 
 /**
  *
@@ -101,6 +104,9 @@ public class vtnPrincipal extends javax.swing.JFrame {
         jMenuItem18 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem19 = new javax.swing.JMenuItem();
@@ -437,6 +443,27 @@ public class vtnPrincipal extends javax.swing.JFrame {
         jMenu3.add(jMenuItem2);
 
         jMenuBar1.add(jMenu3);
+
+        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/ventas.png"))); // NOI18N
+        jMenu7.setText("Ventas");
+
+        jMenuItem9.setText("Venta/Salida");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem9);
+
+        jMenuItem10.setText("Armar combo");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem10);
+
+        jMenuBar1.add(jMenu7);
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/producto.png"))); // NOI18N
         jMenu4.setText("Productos");
@@ -885,6 +912,44 @@ public class vtnPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_panelRound2MousePressed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+
+        String varValidacion = vtnVentas.validaVentana;
+        if (varValidacion == null) 
+        {
+            vtnVentas ven = new vtnVentas();
+            ven.setTitle("Ventas");
+            ven.setResizable(false);//no es redimencionable
+            ven.setMaximizable(false);//no se puede maximizar
+            ven.setClosable(true);//si se puede cerra la ventana
+            // alm.setIconifiable(true);
+            sysMDI.add(ven);
+            ven.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "La ventana ventas\nya esa activa..!!", null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        String varValidacion = vtnComboProducto.validaVentana;
+        if (varValidacion == null) 
+        {
+            vtnComboProducto ven = new vtnComboProducto();
+            ven.setTitle("Armar combo producto");
+            ven.setResizable(false);//no es redimencionable
+            ven.setMaximizable(false);//no se puede maximizar
+            ven.setClosable(true);//si se puede cerra la ventana
+            // alm.setIconifiable(true);
+            sysMDI.add(ven);
+            ven.setVisible(true);
+        } 
+        else 
+        {
+            JOptionPane.showMessageDialog(this, "La ventana armar combo producto\nya esa activa..!!", null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -939,10 +1004,12 @@ public class vtnPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
@@ -959,6 +1026,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     public static javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

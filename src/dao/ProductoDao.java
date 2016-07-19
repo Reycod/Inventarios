@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import mapeos.Producto;
 import org.hibernate.HibernateException;
@@ -115,6 +116,19 @@ public class ProductoDao
         pro = (Producto) query.uniqueResult();
         sesion.close();
         return pro;
+    }
+    
+    //Metodo que realiza la busqueda de un producto para el filtro por nombre
+    public List<Producto> buscarProductoFiltro(String nom) throws Exception 
+    {
+        List<Producto> resultado;
+        Producto pro = null;
+        iniciarOperacion();
+        Query query = sesion.createQuery("From Producto Where like nombre=?");
+        query.setString(0, "%"+nom+"%");
+        resultado = query.list();
+        sesion.close();
+        return resultado;
     }
     
     public boolean eliminarProducto(Producto pro) throws Exception 
