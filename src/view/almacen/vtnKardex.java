@@ -132,7 +132,6 @@ public class vtnKardex extends javax.swing.JInternalFrame {
         jtableHeader.setDefaultRenderer(new HeaderCellRenderer());
         tabla.setTableHeader(jtableHeader);
         //fin de la creacion del formato del kardex
-
     }
 
     //Metodo que carga los elementos del almacen

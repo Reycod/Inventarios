@@ -5,7 +5,19 @@
  */
 package view.ventas;
 
+import dao.ComboProductoDao;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import mapeos.ComboProducto;
+import mapeos.ItemsCombo;
+import util.Operaciones;
+import util.Validaciones;
 import view.vtnPrincipal;
 
 /**
@@ -18,6 +30,8 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
      * Creates new form vtnComboProducto
      */
     public static String validaVentana;
+    private ComboProducto _objComboProducto;//variable global que contiene el id del combo
+    private static int _banderaActualizar;
 
     public vtnComboProducto() {
         initComponents();
@@ -27,6 +41,80 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         int b = vtnPrincipal.sysMDI.getHeight() - this.getHeight();
         setLocation(a / 2, b / 2);
         /*fin-----*/
+        listarCombos();
+        btnActualizar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        
+
+        //------inicializacion de la bandera ---------
+        // valor=1 si esta en modo registro
+        //valor=0 si esta en modo de actualizacion
+        _banderaActualizar = 1;
+        //---------------
+    }
+
+    public ComboProducto getObjComboProducto() {
+        return _objComboProducto;
+    }
+
+    public void setObjComboProducto(ComboProducto _objComboProducto) {
+        this._objComboProducto = _objComboProducto;
+    }
+
+    //metodo que realiza el limpiado de la tabla
+    public void limpiarTabla(JTable tabla) {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            int filas = tabla.getRowCount();
+            for (int i = 0; filas > i; i++) {
+                modelo.removeRow(0);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
+    }
+
+    public void limpiarCampos() {
+        limpiarTabla(tablaComboProducto);
+        txtNombreProdCombo.setText("");
+        txtCodigoCombo.setText("");
+        txtPrecioComboProd.setText("0.0");
+        txtPrecioCliente.setText("0.0");
+        txtPrecioMayorista.setText("0.0");
+    }
+
+    //Metodo que realiza el listado de los datos en un JTable de java
+    public void listarCombos() {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaCombosArmados.getModel();//creando el modela ára llenar los datos al JTableje
+            limpiarTabla(tablaCombosArmados);
+            //realizando la consulta para realizar el listado de los datos
+            ComboProductoDao cmDao = new ComboProductoDao();
+            List<Object[]> lista = cmDao.listarCombosArmados();
+            if (lista.size() > 0) {
+                Object[] fila = new Object[modelo.getColumnCount()];
+                TableColumnModel columnModel = tablaCombosArmados.getColumnModel();
+                boolean pivote = false;
+                for (int i = 0; i < lista.size(); i++) {
+                    //columnModel.getColumn(i).setPreferredWidth(20);
+                    fila[0] = lista.get(i)[0];//idcombo
+                    fila[1] = lista.get(i)[1];//codigo
+                    fila[2] = lista.get(i)[2];//nombre
+                    fila[3] = lista.get(i)[3];//precio mercado
+                    fila[4] = lista.get(i)[4];//precio cliente
+                    fila[5] = lista.get(i)[5];//precio mayorista
+                    fila[6] = lista.get(i)[6];//precio Estado
+
+                    modelo.addRow(fila);
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No tiene Combos de Productos..!! ", "Mensaje", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error---->" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -45,25 +133,38 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtCodigoCombo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtNombreProdCombo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         comboEstado = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaComboProducto = new javax.swing.JTable();
+        btnGuardar = new javax.swing.JButton();
+        btnRes = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        txtPrecioComboProd = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtPrecioCliente = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtPrecioMayorista = new javax.swing.JTextField();
+        btnActualizar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaCombosArmados = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tablaItemsCombo = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -114,24 +215,19 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jTabbedPane1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel1.setText("Codigo:");
 
-        jTextField1.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel3.setText("Precio:");
-
-        jTextField3.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField3.setText("0.0");
+        txtCodigoCombo.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setText("Nombre:");
 
-        jTextField2.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtNombreProdCombo.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel6.setText("Estado:");
@@ -148,19 +244,15 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodigoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2))
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNombreProdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -170,27 +262,24 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNombreProdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtCodigoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel4.setText("Producto:");
-
-        jTextField4.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        jLabel4.setText("Seleccione producto");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/View.png"))); // NOI18N
+        jButton1.setText("Examinar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -204,24 +293,23 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jScrollPane1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+
+        tablaComboProducto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tablaComboProducto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -240,16 +328,146 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             tablaComboProducto.getColumnModel().getColumn(2).setMaxWidth(85);
         }
 
+        btnGuardar.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnRes.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        btnRes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/revert_32.png"))); // NOI18N
+        btnRes.setText("Reestablecer");
+        btnRes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResActionPerformed(evt);
+            }
+        });
+
+        jButton4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/salir.png"))); // NOI18N
+        jButton4.setText("Salir");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/Remove.png"))); // NOI18N
+        jButton5.setToolTipText("Seleccione un producto de la tabla a eliminar\n");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Modalidad de precios"));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel3.setText("Mercado");
+
+        txtPrecioComboProd.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtPrecioComboProd.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPrecioComboProd.setText("0.0");
+        txtPrecioComboProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioComboProdKeyTyped(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel5.setText("Cliente:");
+
+        txtPrecioCliente.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtPrecioCliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPrecioCliente.setText("0.0");
+        txtPrecioCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioClienteKeyTyped(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel7.setText("Mayorista:");
+
+        txtPrecioMayorista.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtPrecioMayorista.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPrecioMayorista.setText("0.0");
+        txtPrecioMayorista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioMayoristaKeyTyped(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(txtPrecioComboProd, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtPrecioCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrecioMayorista, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtPrecioComboProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtPrecioCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtPrecioMayorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
+        );
+
+        btnActualizar.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/modificar.png"))); // NOI18N
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnActualizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)
+                        .addGap(25, 25, 25)
+                        .addComponent(jButton5))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -257,42 +475,92 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5)
+                        .addContainerGap(52, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton4)
+                            .addComponent(btnRes)
+                            .addComponent(btnGuardar)
+                            .addComponent(btnActualizar))
+                        .addContainerGap())))
         );
 
         jTabbedPane1.addTab("Armar Combo", jPanel3);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCombosArmados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "CODIGO", "NOMBRE", "P. MERCADO", "P. CLIENTE", "P. MAYORISTA", "ESTADO"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        tablaCombosArmados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablaCombosArmadosMousePressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaCombosArmados);
+        if (tablaCombosArmados.getColumnModel().getColumnCount() > 0) {
+            tablaCombosArmados.getColumnModel().getColumn(0).setMinWidth(40);
+            tablaCombosArmados.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tablaCombosArmados.getColumnModel().getColumn(0).setMaxWidth(50);
+            tablaCombosArmados.getColumnModel().getColumn(6).setMinWidth(80);
+            tablaCombosArmados.getColumnModel().getColumn(6).setPreferredWidth(80);
+            tablaCombosArmados.getColumnModel().getColumn(6).setMaxWidth(90);
+        }
+
+        jScrollPane3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+
+        tablaItemsCombo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "CODIGO", "NOMBRE", "CANTIDAD"
+            }
+        ));
+        tablaItemsCombo.setEnabled(false);
+        jScrollPane3.setViewportView(tablaItemsCombo);
+        if (tablaItemsCombo.getColumnModel().getColumnCount() > 0) {
+            tablaItemsCombo.getColumnModel().getColumn(0).setMinWidth(45);
+            tablaItemsCombo.getColumnModel().getColumn(0).setPreferredWidth(45);
+            tablaItemsCombo.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel8.setText("Productos que componen el Combo");
+
+        jButton6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/print.png"))); // NOI18N
+        jButton6.setText("Imprimir");
+
+        btnModificar.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/modificar.png"))); // NOI18N
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel9.setText("Listado de Combos Armados");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -301,18 +569,42 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnModificar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton6))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addGap(181, 181, 181))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(201, 201, 201)
+                .addComponent(jLabel9)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6)
+                    .addComponent(btnModificar))
+                .addGap(13, 13, 13))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -358,56 +650,358 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
-        validaVentana=null;
+        validaVentana = null;
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String varValicadion = vtnBuscarProducto.validaVentana;//recuperando el valor de la variable de validacion de la ventana
-        if (varValicadion == null) 
-        {
+        if (varValicadion == null) {
             vtnBuscarProducto listaPro = new vtnBuscarProducto();
 
             vtnPrincipal.sysMDI.add(listaPro);
             listaPro.setClosable(true);//si se puede cerra la ventana
             listaPro.setTitle("Seleccione un producto");
             //listaPro.setLocationRelativeTo(null);
-           
+
             listaPro.setVisible(true);
 
         } else {
             JOptionPane.showMessageDialog(this, "La ventana de adicionar productos ya esta activa..!!", "Mensaje..", JOptionPane.ERROR_MESSAGE);
         }
-        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btnResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResActionPerformed
+        // TODO add your handling code here:
+        limpiarCampos();
+    }//GEN-LAST:event_btnResActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        try {
+            List<String> validar = new ArrayList<>();
+            validar.add(txtNombreProdCombo.getText());
+            validar.add(txtCodigoCombo.getText());
+
+            if (Validaciones.validarCampos(validar)) {
+                if (tablaComboProducto.getRowCount() > 0) {
+                    double precioM = Double.parseDouble(txtPrecioComboProd.getText());
+                    double precioC = Double.parseDouble(txtPrecioCliente.getText());
+                    double precioMa = Double.parseDouble(txtPrecioMayorista.getText());
+
+                    if (precioM > 0 && precioC > 0 && precioMa > 0) {
+                        //SETEANDO LOS CAMPOS COMBO PRODUCTO
+                        ComboProducto cmb = new ComboProducto();
+                        cmb.setCodigo(txtCodigoCombo.getText());//codigo comboProducto
+                        cmb.setNombre(txtNombreProdCombo.getText());//nombre comboProducto
+                        cmb.setEstado(comboEstado.getSelectedItem().toString());// estado
+                        cmb.setPrecioMercado(txtPrecioComboProd.getText());//precio Mercado comboProducto
+                        cmb.setPrecioCliente(txtPrecioCliente.getText());//precio Cliente comboProducto
+                        cmb.setPrecioMayorista(txtPrecioMayorista.getText());//precio Mayorista comboProducto
+
+                        //RECUPERANDO LOS ITEMS DEL COMBOPRODUCTO
+                        Set<ItemsCombo> items = new HashSet<>();
+                        for (int i = 0; i < tablaComboProducto.getRowCount(); i++) {
+                            ItemsCombo det = new ItemsCombo();
+                            det.setIdProducto(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 0))));
+                            det.setCantidad(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 2))));
+                            det.setCombo(cmb);
+                            items.add(det);
+                        }
+                        cmb.setItemsCombo(items);
+
+                        //REALIZANDO LA INSERCION DE LOS DATOS
+                        ComboProductoDao cmbDao = new ComboProductoDao();
+                        if (cmbDao.registarComboProducto(cmb)) {
+                            JOptionPane.showMessageDialog(this, "Registro de Combo Producto Correcto..!!", "Mensaje..", JOptionPane.INFORMATION_MESSAGE);
+                            limpiarCampos();
+                            listarCombos();
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Los precios deben ser mayor a cero..", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Adicione un producto(s)", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Faltan campos por llenar", "Mensaje", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error--->" + ex.getMessage(), "Mensaje..", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtPrecioComboProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioComboProdKeyTyped
+        char c = evt.getKeyChar();
+//        if (c < '0' || c > '9') {
+//            evt.consume();
+//        }
+        if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != '.') {
+            evt.consume();
+        }
+        if (evt.getKeyChar() == '.' && txtPrecioComboProd.getText().contains(".")) {
+            evt.consume();
+        }
+
+    }//GEN-LAST:event_txtPrecioComboProdKeyTyped
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+
+        if (_banderaActualizar == 1) 
+        {
+            DefaultTableModel modelo = (DefaultTableModel) tablaComboProducto.getModel();
+            if (tablaComboProducto.getRowCount() > 0) {
+                if (tablaComboProducto.getSelectedRows().length != 0) {
+                    modelo.removeRow(tablaComboProducto.getSelectedRow());
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Seleccione el producto a eliminar ", "Mensaje..", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No tiene productos a eliminar..!! ", "Mensaje..", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        //ingresando en modo de actualizacion
+        if (_banderaActualizar == 0) 
+        {
+            DefaultTableModel modelo = (DefaultTableModel) tablaComboProducto.getModel();
+
+            if (tablaComboProducto.getRowCount() > 0) 
+            {
+                if (tablaComboProducto.getSelectedRows().length != 0)
+                {
+                    int idprod = Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(tablaComboProducto.getSelectedRow(), 0)));
+                    Operaciones.eliminarItemComboProducto(idprod, this.getObjComboProducto().getIdcomboProducto());
+                    modelo.removeRow(tablaComboProducto.getSelectedRow());
+                } 
+                else 
+                {
+                    JOptionPane.showMessageDialog(null, "Seleccione el producto a eliminar ", "Mensaje..", JOptionPane.WARNING_MESSAGE);
+                }
+            } 
+            else 
+            {
+                JOptionPane.showMessageDialog(null, "No tiene items a eliminar..!! ", "Mensaje..", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txtPrecioClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioClienteKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+//        if (c < '0' || c > '9') {
+//            evt.consume();
+//        }
+        if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != '.') {
+            evt.consume();
+        }
+        if (evt.getKeyChar() == '.' && txtPrecioCliente.getText().contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPrecioClienteKeyTyped
+
+    private void txtPrecioMayoristaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioMayoristaKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+//        if (c < '0' || c > '9') {
+//            evt.consume();
+//        }
+        if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != '.') {
+            evt.consume();
+        }
+        if (evt.getKeyChar() == '.' && txtPrecioMayorista.getText().contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPrecioMayoristaKeyTyped
+
+    private void tablaCombosArmadosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCombosArmadosMousePressed
+        // TODO add your handling code here:
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) tablaCombosArmados.getModel();//creando el modelo pára llenar los datos al JTableje
+            int idcompra = Integer.parseInt(String.valueOf(tablaCombosArmados.getValueAt(tablaCombosArmados.getSelectedRow(), 0)));//recuperando el id del combo
+            ComboProductoDao cmDao = new ComboProductoDao();
+            List<Object[]> detalle = cmDao.listarItemsComboArmado(idcompra);
+
+            DefaultTableModel modelodetalle = (DefaultTableModel) tablaItemsCombo.getModel();//creando el modelo pára llenar los datos al JTableje
+            Object[] fila = new Object[modelodetalle.getColumnCount()];
+            limpiarTabla(tablaItemsCombo);
+            for (int i = 0; i < detalle.size(); i++) {
+                // JOptionPane.showMessageDialog(rootPane, "DIM-->" + i);
+                fila[0] = detalle.get(i)[0];//id
+                fila[1] = detalle.get(i)[1];//producto
+                fila[2] = detalle.get(i)[2];//cantidad
+
+                modelodetalle.addRow(fila);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al recuperar el detalle de la compra " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_tablaCombosArmadosMousePressed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        if (tablaCombosArmados.getSelectedRows().length != 0) {
+            try {
+                //recuperando los valores de la tablaCombosArmados y visualizando en la ventana de 
+                //registro para su actualizacion
+                int idCombo = Integer.parseInt(String.valueOf(tablaCombosArmados.getValueAt(tablaCombosArmados.getSelectedRow(), 0)));//id del combo seleccionado
+
+                ComboProductoDao cmb = new ComboProductoDao();
+                this.setObjComboProducto(cmb.buscarCombo(idCombo));//recuperando el combo seleccionado
+                //JOptionPane.showMessageDialog(this, "--->" + getObjComboProducto().getNombre());
+
+                btnGuardar.setEnabled(false);
+                btnRes.setEnabled(false);
+                btnActualizar.setEnabled(true);
+
+                txtCodigoCombo.setText(this.getObjComboProducto().getCodigo());
+                txtNombreProdCombo.setText(this.getObjComboProducto().getNombre());
+                txtPrecioComboProd.setText(this.getObjComboProducto().getPrecioMercado());
+                txtPrecioCliente.setText(this.getObjComboProducto().getPrecioCliente());
+                txtPrecioMayorista.setText(this.getObjComboProducto().getPrecioMayorista());
+
+                ComboProductoDao cmDao = new ComboProductoDao();
+                List<Object[]> detalle = cmDao.listarItemsComboArmado(idCombo);
+
+                DefaultTableModel modelodetalle = (DefaultTableModel) tablaComboProducto.getModel();//creando el modelo pára llenar los datos al JTableje
+                Object[] fila = new Object[modelodetalle.getColumnCount()];
+                limpiarTabla(tablaComboProducto);
+                for (int i = 0; i < detalle.size(); i++) 
+                {
+                    // JOptionPane.showMessageDialog(rootPane, "DIM-->" + i);
+                    fila[0] = detalle.get(i)[0];//id
+                    fila[1] = detalle.get(i)[1];//producto
+                    fila[2] = detalle.get(i)[2];//cantidad
+
+                    modelodetalle.addRow(fila);
+                }
+                
+                _banderaActualizar=0;//cambiando al modo actualizar
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al recuperar los items del combo" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            }
+
+            JOptionPane.showMessageDialog(this, "hola!!", "Mensaje", JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un combo a moficicar..!!", "Mensaje", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        try {
+
+            List<String> validar = new ArrayList<>();
+            validar.add(txtNombreProdCombo.getText());
+            validar.add(txtCodigoCombo.getText());
+
+            if (Validaciones.validarCampos(validar)) 
+            {
+                if (tablaComboProducto.getRowCount() > 0) 
+                {
+                    double precioM = Double.parseDouble(txtPrecioComboProd.getText());
+                    double precioC = Double.parseDouble(txtPrecioCliente.getText());
+                    double precioMa = Double.parseDouble(txtPrecioMayorista.getText());
+
+                    if (precioM > 0 && precioC > 0 && precioMa > 0) 
+                    {
+                        //SETEANDO LOS CAMPOS COMBO PRODUCTO
+                        ComboProducto cmb =this.getObjComboProducto();
+                        //cmb.setIdcomboProducto(this.getIdCombo());
+                        cmb.setCodigo(txtCodigoCombo.getText());//codigo comboProducto
+                        cmb.setNombre(txtNombreProdCombo.getText());//nombre comboProducto
+                        cmb.setEstado(comboEstado.getSelectedItem().toString());// estado
+                        cmb.setPrecioMercado(txtPrecioComboProd.getText());//precio Mercado comboProducto
+                        cmb.setPrecioCliente(txtPrecioCliente.getText());//precio Cliente comboProducto
+                        cmb.setPrecioMayorista(txtPrecioMayorista.getText());//precio Mayorista comboProducto
+
+                        //RECUPERANDO LOS ITEMS DEL COMBOPRODUCTO
+                        Set<ItemsCombo> items = new HashSet<>();
+                        for (int i = 0; i < tablaComboProducto.getRowCount(); i++) 
+                        {
+                            ItemsCombo det = new ItemsCombo();
+                            det.setIdProducto(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 0))));
+                            det.setCantidad(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 2))));
+                            det.setCombo(cmb);
+                            items.add(det);
+                        }
+                        
+                        cmb.setItemsCombo(items);
+
+                        //REALIZANDO LA INSERCION DE LOS DATOS
+                        ComboProductoDao cmbDao = new ComboProductoDao();
+                        if (cmbDao.actualizarComboProducto(cmb)) 
+                        {
+                            JOptionPane.showMessageDialog(this, "Actualizacion del Combo Producto Correcto..!!", "Mensaje..", JOptionPane.INFORMATION_MESSAGE);
+                            limpiarCampos();
+                            listarCombos();
+                            _banderaActualizar=1;//cambiando al modo registro
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Los precios deben ser mayor a cero..", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Adicione un producto(s)", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Faltan campos por llenar", "Mensaje", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error--->" + ex.getMessage(), "Mensaje..", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnRes;
     private javax.swing.JComboBox comboEstado;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     public static javax.swing.JTable tablaComboProducto;
+    private javax.swing.JTable tablaCombosArmados;
+    private javax.swing.JTable tablaItemsCombo;
+    private javax.swing.JTextField txtCodigoCombo;
+    private javax.swing.JTextField txtNombreProdCombo;
+    private javax.swing.JTextField txtPrecioCliente;
+    private javax.swing.JTextField txtPrecioComboProd;
+    private javax.swing.JTextField txtPrecioMayorista;
     // End of variables declaration//GEN-END:variables
 }

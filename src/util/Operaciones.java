@@ -108,8 +108,7 @@ public class Operaciones {
 
     //Metodo que realiza la insercion del registro del ajuste en el Kardex del Fifo
     public static void ingresoFifoAjuste(Fifo fifo) {
-        try 
-        {
+        try {
             Connection miConexion = Conexion.getConectar();
             PreparedStatement statement = miConexion.prepareStatement("INSERT INTO fifo VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             statement.setInt(1, 0);//id 
@@ -121,16 +120,14 @@ public class Operaciones {
             statement.setInt(7, fifo.getCant_entrada());
             statement.setString(8, fifo.getPrecio_entrada());
             statement.setString(9, fifo.getP_total_entrada());
-            
+
             statement.setInt(10, fifo.getCant_salida());
             statement.setString(11, fifo.getPrecio_salida());
             statement.setString(12, fifo.getPrecio_salida());
-            
+
             statement.setInt(13, fifo.getCant_saldo());
             statement.setString(14, fifo.getPrecio_saldo());
             statement.setString(15, fifo.getP_total_saldo());
-            
-            
 
             statement.executeUpdate();
             statement.close();
@@ -166,18 +163,34 @@ public class Operaciones {
     }
 
     //Metodo  que parametriza el calendario de OC
-    public static void parametrosCalendario(JDateChooser campo) 
-    {
+    public static void parametrosCalendario(JDateChooser campo) {
         Calendar fecha = new GregorianCalendar();
         int año = fecha.get(Calendar.YEAR);
         int mes = fecha.get(Calendar.MONTH);
         int dia = fecha.get(Calendar.DAY_OF_MONTH);
-        
-        //JOptionPane.showMessageDialog(null, "" + año+"-"+mes+"-"+dia);
 
+        //JOptionPane.showMessageDialog(null, "" + año+"-"+mes+"-"+dia);
         Calendar calendario = new GregorianCalendar(año, mes, dia);
         //Estableciendo la fecha minima de seleccion
         campo.setMinSelectableDate(calendario.getTime());
+    }
+
+    //Metodo que elimina un producto de los items combo producto
+    public static void eliminarItemComboProducto(int idprod, int idcombo) {
+        try 
+        {
+            Connection miConexion = Conexion.getConectar();
+            PreparedStatement statement = miConexion.prepareStatement("DELETE FROM ItemsCombo WHERE idProducto=? and combo.idcomboProducto=?");
+            statement.setInt(1, idprod);
+            statement.setInt(2, idcombo);
+            statement.executeUpdate();
+            statement.close();
+            miConexion.close();
+        } 
+        catch (Exception ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al cambiar el estado en la tabla\nDetalleCompra" + ex.getMessage());
+        }
     }
 
 //    

@@ -32,7 +32,6 @@ import util.QR.MyQRCreator;
 import util.Validaciones;
 import view.vtnPrincipal;
 import static view.OC.vtnListaProOD.validaVentana;
-
 /**
  *
  * @author Reynaldo
@@ -64,7 +63,8 @@ public class vtnOD extends javax.swing.JInternalFrame {
     }
 
     //Metodo  que parametriza el calendario de OC
-    public void parametrosCalendario() {
+    public void parametrosCalendario() 
+    {
         Calendar calendario = new GregorianCalendar(2016, 5, 10);
         //Estableciendo la fecha minima de seleccion
         txtfechaE.setMinSelectableDate(calendario.getTime());
@@ -605,7 +605,8 @@ public class vtnOD extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        try {
+        try 
+        {
             List<String> validar = new ArrayList<>();
             validar.add(txtNuOD.getText());
             validar.add(txtCotProv.getText());
@@ -640,7 +641,8 @@ public class vtnOD extends javax.swing.JInternalFrame {
 
                 //RECUPERANDO EL DETALLE DE LOS ITEMS SELECCIONADOS EN LA TABLA
                 Set<Detallecompra> items = new HashSet<>();
-                for (int i = 0; i < tablaOD.getRowCount(); i++) {
+                for (int i = 0; i < tablaOD.getRowCount(); i++) 
+                {
 
                     Detallecompra det = new Detallecompra();
                     det.setCantidad(String.valueOf(tablaOD.getValueAt(i, 1)));

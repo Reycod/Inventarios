@@ -109,11 +109,12 @@ public class vtnBuscarProducto extends javax.swing.JInternalFrame {
             ProductoDao pro = new ProductoDao();
 
             ArrayList<Producto> result = null;
-            if (String.valueOf(cboParametroPro.getSelectedItem()).equalsIgnoreCase("Codigo")) 
-            {
-               // result = BDProducto.listarProductoPorCodigoEstado(txtBuscarPro.getText());
-
-            } else if (String.valueOf(cboParametroPro.getSelectedItem()).equalsIgnoreCase("Nombre")) 
+//            if (String.valueOf(cboParametroPro.getSelectedItem()).equalsIgnoreCase("Codigo")) 
+//            {
+//               // result = BDProducto.listarProductoPorCodigoEstado(txtBuscarPro.getText());
+//
+//            } else 
+            if (String.valueOf(cboParametroPro.getSelectedItem()).equalsIgnoreCase("Nombre")) 
             {
                 result = (ArrayList<Producto>) pro.buscarProductoFiltro(txtNombreProd.getText());
             } else 
@@ -208,7 +209,7 @@ public class vtnBuscarProducto extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel1.setText("Buscar:");
 
-        cboParametroPro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "**--**", "Codigo", "Nombre" }));
+        cboParametroPro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "**--**", "Nombre" }));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("Producto:");

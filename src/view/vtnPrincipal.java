@@ -25,6 +25,7 @@ import view.reporteCompras.vtnReporteCompras;
 import view.usuarios.vtnUsuarios;
 import view.usuarios.vtngestionPersmisos;
 import view.ventas.vtnComboProducto;
+import view.ventas.vtnDefinicionPrecios;
 import view.ventas.vtnVentas;
 
 
@@ -107,6 +108,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem20 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem19 = new javax.swing.JMenuItem();
@@ -462,6 +464,14 @@ public class vtnPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu7.add(jMenuItem10);
+
+        jMenuItem20.setText("Definir lista precios");
+        jMenuItem20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem20ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem20);
 
         jMenuBar1.add(jMenu7);
 
@@ -950,6 +960,27 @@ public class vtnPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
+    private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        String varValidacion = vtnDefinicionPrecios.validaVentana;
+        if (varValidacion == null) 
+        {
+            vtnDefinicionPrecios ven = new vtnDefinicionPrecios();
+            ven.setTitle("Definicion de lista de precios");
+            ven.setResizable(false);//no es redimencionable
+            ven.setMaximizable(false);//no se puede maximizar
+            ven.setClosable(true);//si se puede cerra la ventana
+            // alm.setIconifiable(true);
+            sysMDI.add(ven);
+            ven.setVisible(true);
+        } 
+        else 
+        {
+            JOptionPane.showMessageDialog(this, "La ventana Definir Lista de Precios\nya esa activa..!!", null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem20ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1020,6 +1051,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

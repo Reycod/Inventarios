@@ -27,5 +27,9 @@
     <mapping resource="mapeos/Factura.hbm.xml"/>
     <mapping resource="mapeos/Encargado.hbm.xml"/>
     <mapping resource="mapeos/Detallefactura.hbm.xml"/>
+    <mapping resource="mapeos/ComboProducto.hbm.xml"/>
+    <mapping resource="mapeos/ItemsCombo.hbm.xml"/>
+    <mapping resource="mapeos/ListaPrecios.hbm.xml"/>
+    <mapping resource="mapeos/Productos_lista_precios.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

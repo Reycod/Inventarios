@@ -11,97 +11,48 @@ import java.util.Set;
 public class Cliente  implements java.io.Serializable {
 
 
-     private Integer idcliente;
+     private int idcliente;
      private String nombre;
-     private String apellido;
-     private String ci;
-     private String telefono;
-     private String nrocliente;
-     private String correo;
-     private String direccion;
-     private Set facturas = new HashSet(0);
+     private int ci;
 
+  
+    
+//    public Set getFacturas() {
+//        return this.facturas;
+//    }
+//    
+//    public void setFacturas(Set facturas) {
+//        this.facturas = facturas;
+//    }
+
+    //private Set facturas = new HashSet(0);
     public Cliente() {
     }
 
-    public Cliente(String nombre, String apellido, String ci, String telefono, String nrocliente, String correo, String direccion, Set facturas) {
-       this.nombre = nombre;
-       this.apellido = apellido;
-       this.ci = ci;
-       this.telefono = telefono;
-       this.nrocliente = nrocliente;
-       this.correo = correo;
-       this.direccion = direccion;
-       this.facturas = facturas;
+    public int getIdcliente() {
+        return idcliente;
     }
-   
-    public Integer getIdcliente() {
-        return this.idcliente;
-    }
-    
-    public void setIdcliente(Integer idcliente) {
+
+    public void setIdcliente(int idcliente) {
         this.idcliente = idcliente;
     }
+
     public String getNombre() {
-        return this.nombre;
+        return nombre;
     }
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public String getApellido() {
-        return this.apellido;
+
+    public int getCi() {
+        return ci;
     }
-    
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-    public String getCi() {
-        return this.ci;
-    }
-    
-    public void setCi(String ci) {
+
+    public void setCi(int ci) {
         this.ci = ci;
     }
-    public String getTelefono() {
-        return this.telefono;
-    }
     
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-    public String getNrocliente() {
-        return this.nrocliente;
-    }
-    
-    public void setNrocliente(String nrocliente) {
-        this.nrocliente = nrocliente;
-    }
-    public String getCorreo() {
-        return this.correo;
-    }
-    
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-    public String getDireccion() {
-        return this.direccion;
-    }
-    
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-    public Set getFacturas() {
-        return this.facturas;
-    }
-    
-    public void setFacturas(Set facturas) {
-        this.facturas = facturas;
-    }
-
-
-
-
 }
 
 

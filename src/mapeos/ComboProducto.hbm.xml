@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="mapeos.ComboProducto" table="comboproducto" catalog="sysinventory">
+        <id name="idcomboProducto" type="java.lang.Integer">
+            <column name="idcomboProducto" />
+            <generator class="identity" />
+        </id>
+          
+        <property name="codigo">
+            <column name="codigo"/>
+        </property>
+        
+        <property name="nombre">
+            <column name="nombre"/>
+        </property>
+        
+        <property name="precioMercado">
+            <column name="precioMercado" />
+        </property>
+        
+        <property name="precioCliente">
+            <column name="precioCliente"/>
+        </property>
+        
+        <property name="precioMayorista">
+            <column name="precioMayorista"/>
+        </property>
+        
+        <property name="estado">
+            <column name="estado"/>
+        </property>
+             
+        
+        <set name="itemsCombo" table="itemscombo" inverse="true" cascade="all" lazy="true" fetch="select">
+            <key>
+                <column name="idcomboProducto"/>
+            </key>
+            <one-to-many class="mapeos.ItemsCombo" />
+        </set> 
+    </class>
+  
+
+</hibernate-mapping>

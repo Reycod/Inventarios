@@ -124,8 +124,23 @@ public class ProductoDao
         List<Producto> resultado;
         Producto pro = null;
         iniciarOperacion();
-        Query query = sesion.createQuery("From Producto Where like nombre=?");
-        query.setString(0, "%"+nom+"%");
+        Query query = sesion.createQuery("From Producto Where nombre like "+"'"+nom+"%"+"'");
+        //query.setString(0,nom+"%");
+        System.out.println(query);
+        resultado = query.list();
+        sesion.close();
+        return resultado;
+    }
+    
+    //Metodo que realiza la busqueda de un producto para el filtro por nombre
+    public List<Producto> buscarProductoFiltroCodigo(String cod) throws Exception 
+    {
+        List<Producto> resultado;
+        Producto pro = null;
+        iniciarOperacion();
+        Query query = sesion.createQuery("From Producto Where codigo like "+"'"+cod+"%"+"'");
+        //query.setString(0,nom+"%");
+        System.out.println(query);
         resultado = query.list();
         sesion.close();
         return resultado;
