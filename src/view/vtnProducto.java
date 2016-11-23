@@ -772,72 +772,79 @@ public class vtnProducto extends javax.swing.JInternalFrame {
             validar.add(txtMarcaPro.getText());
             validar.add(txtNomPro.getText());
 
-            if (Validaciones.validarCampos(validar)) {
-                //recuperando la categoria
-                CategoriaDao catDao = new CategoriaDao();
-                Categoria cat = catDao.buscarCategoriaLista(comboCategoria.getSelectedItem().toString());
+            ProductoDao p = new ProductoDao();
+            if (p.buscarCodigoRepetido(txtCodigoPro.getText()) == false)//validando si el codigo se encuantra registrado 
+            {
+
+                if (Validaciones.validarCampos(validar)) {
+                    //recuperando la categoria
+                    CategoriaDao catDao = new CategoriaDao();
+                    Categoria cat = catDao.buscarCategoriaLista(comboCategoria.getSelectedItem().toString());
                 //fin de la recuperacion de la categoria
 
-                //recuperando el proveedor
-                ProveedorDao provDao = new ProveedorDao();
-                Proveedor prov = provDao.buscarProveedor(comboProv.getSelectedItem().toString());
+                    //recuperando el proveedor
+                    ProveedorDao provDao = new ProveedorDao();
+                    Proveedor prov = provDao.buscarProveedor(comboProv.getSelectedItem().toString());
                 //fin de la recuperacion del proveedor
 
-                //recuperando el la unidad de medida
-                UnidadMedidaDao unDao = new UnidadMedidaDao();
-                UnidadMedida unidad = unDao.buscarUnidadMedida(comboUnidades.getSelectedItem().toString());
-                //fin de la recuperacion de la unidad de medida
+                    //recuperando el la unidad de medida
+                    UnidadMedidaDao unDao = new UnidadMedidaDao();
+                    UnidadMedida unidad = unDao.buscarUnidadMedida(comboUnidades.getSelectedItem().toString());
+                    //fin de la recuperacion de la unidad de medida
 
-                Producto pro = new Producto();
+                    Producto pro = new Producto();
 
-                if (RacPro.isSelected()) {
-                    pro.setEstado("Activo");
-                } else if (RacInac.isSelected()) {
-                    pro.setEstado("Inactivo");
-                }
+                    if (RacPro.isSelected()) {
+                        pro.setEstado("Activo");
+                    } else if (RacInac.isSelected()) {
+                        pro.setEstado("Inactivo");
+                    }
 
-                pro.setNombre(txtNomPro.getText());
-                pro.setDescripcion(txtDesPro.getText());
-                pro.setMarca(txtMarcaPro.getText());
-                pro.setPrecio(txtPrecioPro.getText());
-                pro.setCodigoproducto(txtCodigoPro.getText());
+                    pro.setNombre(txtNomPro.getText());
+                    pro.setDescripcion(txtDesPro.getText());
+                    pro.setMarca(txtMarcaPro.getText());
+                    pro.setPrecio(txtPrecioPro.getText());
+                    pro.setCodigoproducto(txtCodigoPro.getText());
 
-                pro.setStockMinimo(Integer.parseInt(txtStockMinimo.getValue().toString()));
-                pro.setStockMaximo(Integer.parseInt(txtStockMaximo.getValue().toString()));
+                    pro.setStockMinimo(Integer.parseInt(txtStockMinimo.getValue().toString()));
+                    pro.setStockMaximo(Integer.parseInt(txtStockMaximo.getValue().toString()));
 
-                //insertando las referecnias a otras tablas
-                pro.setCategoria(cat);
-                pro.setProveedor(prov);
-                pro.setUnidadMedida(unidad);
-                //fin de la insercion de referencias a otras tabalas
+                    //insertando las referecnias a otras tablas
+                    pro.setCategoria(cat);
+                    pro.setProveedor(prov);
+                    pro.setUnidadMedida(unidad);
+                    //fin de la insercion de referencias a otras tabalas
 
-                ProductoDao proDao = new ProductoDao();
+                    ProductoDao proDao = new ProductoDao();
 
-                if (!txtImgProducto.getText().equals("")) {
-                    File archivoImagen = new File(txtImgProducto.getText());//recuperando la url de la imagen
-                    byte[] bytefile = new byte[(int) archivoImagen.length()];
-                    FileInputStream fs = new FileInputStream(archivoImagen);
-                    fs.read(bytefile);
-                    fs.close();
-                    pro.setImagen(bytefile);
+                    if (!txtImgProducto.getText().equals("")) {
+                        File archivoImagen = new File(txtImgProducto.getText());//recuperando la url de la imagen
+                        byte[] bytefile = new byte[(int) archivoImagen.length()];
+                        FileInputStream fs = new FileInputStream(archivoImagen);
+                        fs.read(bytefile);
+                        fs.close();
+                        pro.setImagen(bytefile);
 
-                    if (Integer.parseInt(txtStockMinimo.getValue().toString()) < Integer.parseInt(txtStockMaximo.getValue().toString())) {
-                        if (proDao.registarProducto(pro)) {
-                            JOptionPane.showMessageDialog(this, "Registro de producto correcto..!!", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-                            limpiarCampos();
-                            listarDatos();
-                            bloquearCamposProducto();
-                            limpiarCampos();
-                            setIcono();
+                        if (Integer.parseInt(txtStockMinimo.getValue().toString()) < Integer.parseInt(txtStockMaximo.getValue().toString())) {
+                            if (proDao.registarProducto(pro)) {
+                                JOptionPane.showMessageDialog(this, "Registro de producto correcto..!!", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                                limpiarCampos();
+                                listarDatos();
+                                bloquearCamposProducto();
+                                limpiarCampos();
+                                setIcono();
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Tome en cuenta:\nEl Stock Minimo no puede ser mayor al Stock Maximo", "Mensaje", JOptionPane.WARNING_MESSAGE);
                         }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Tome en cuenta:\nEl Stock Minimo no puede ser mayor al Stock Maximo", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Seleccione una imagen", "Mensaje", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Seleccione una imagen", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Faltan campos por llenar..!!", "mensaje", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Faltan campos por llenar..!!", "mensaje", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El codigo ingresado ya esta registrado..!!", "mensaje", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (Exception e) {
@@ -860,8 +867,7 @@ public class vtnProducto extends javax.swing.JInternalFrame {
         DefaultTableModel tm = (DefaultTableModel) tablaProductos.getModel();
         String dato = String.valueOf(tm.getValueAt(tablaProductos.getSelectedRow(), 0));
         ProductoDao proDao = new ProductoDao();
-        try 
-        {
+        try {
             Producto pro = proDao.buscarProducto(Integer.parseInt(dato));
             this.setObjProducto(pro);//insertando el objeto recuperado por la consulta
             txtNomPro.setText(pro.getNombre());
@@ -899,8 +905,7 @@ public class vtnProducto extends javax.swing.JInternalFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
 
-        try 
-        {
+        try {
             List<String> validar = new ArrayList<>();
             validar.add(txtCodigoPro.getText());
             validar.add(txtDesPro.getText());
@@ -909,77 +914,78 @@ public class vtnProducto extends javax.swing.JInternalFrame {
             validar.add(txtNomPro.getText());
             validar.add(txtPrecioPro.getText());
 
-            if (Validaciones.validarCampos(validar))
+            ProductoDao p = new ProductoDao();
+
+            if (p.buscarCodigoRepetido(txtCodigoPro.getText()) == false)//validando si el codigo se encuantra registrado 
             {
 
-                Producto pro = this.getObjProducto();//recuperando el objeto recuperado desde la tabla
-                pro.setNombre(txtNomPro.getText());
-                pro.setDescripcion(txtDesPro.getText());
-                pro.setMarca(txtMarcaPro.getText());
-                pro.setPrecio(txtPrecioPro.getText());
-                pro.setCodigoproducto(txtCodigoPro.getText());
+                if (Validaciones.validarCampos(validar)) {
 
-                pro.setStockMinimo(Integer.parseInt(txtStockMinimo.getValue().toString()));
-                pro.setStockMaximo(Integer.parseInt(txtStockMaximo.getValue().toString()));
+                    Producto pro = this.getObjProducto();//recuperando el objeto recuperado desde la tabla
+                    pro.setNombre(txtNomPro.getText());
+                    pro.setDescripcion(txtDesPro.getText());
+                    pro.setMarca(txtMarcaPro.getText());
+                    pro.setPrecio(txtPrecioPro.getText());
+                    pro.setCodigoproducto(txtCodigoPro.getText());
 
-               
-                String estado = "";
-                if (RacPro.isSelected()) {
-                    estado = "Activo";
-                } else if (RacInac.isSelected()) {
-                    estado = "Inactivo";
-                }
-                pro.setEstado(estado);
+                    pro.setStockMinimo(Integer.parseInt(txtStockMinimo.getValue().toString()));
+                    pro.setStockMaximo(Integer.parseInt(txtStockMaximo.getValue().toString()));
 
-                //recuperando la categoria
-                CategoriaDao catDao = new CategoriaDao();
-                Categoria cat = catDao.buscarCategoriaLista(comboCategoria.getSelectedItem().toString());
+                    String estado = "";
+                    if (RacPro.isSelected()) {
+                        estado = "Activo";
+                    } else if (RacInac.isSelected()) {
+                        estado = "Inactivo";
+                    }
+                    pro.setEstado(estado);
+
+                    //recuperando la categoria
+                    CategoriaDao catDao = new CategoriaDao();
+                    Categoria cat = catDao.buscarCategoriaLista(comboCategoria.getSelectedItem().toString());
                 //fin de la recuperacion de la categoria
 
-                //recuperando el proveedor
-                ProveedorDao provDao = new ProveedorDao();
-                Proveedor prov = provDao.buscarProveedor(comboProv.getSelectedItem().toString());
+                    //recuperando el proveedor
+                    ProveedorDao provDao = new ProveedorDao();
+                    Proveedor prov = provDao.buscarProveedor(comboProv.getSelectedItem().toString());
                 //fin de la recuperacion del proveedor
 
-                //recuperando el la unidad de medida
-                UnidadMedidaDao unDao = new UnidadMedidaDao();
-                UnidadMedida unidad = unDao.buscarUnidadMedida(comboUnidades.getSelectedItem().toString());
-                //fin de la recuperacion de la unidad de medida
+                    //recuperando el la unidad de medida
+                    UnidadMedidaDao unDao = new UnidadMedidaDao();
+                    UnidadMedida unidad = unDao.buscarUnidadMedida(comboUnidades.getSelectedItem().toString());
+                    //fin de la recuperacion de la unidad de medida
 
-                pro.setCategoria(cat);//insertando la categoria al producto
-                pro.setProveedor(prov);//insertando el proveedor al producto
-                pro.setUnidadMedida(unidad);//insertando la unidad de medida
+                    pro.setCategoria(cat);//insertando la categoria al producto
+                    pro.setProveedor(prov);//insertando el proveedor al producto
+                    pro.setUnidadMedida(unidad);//insertando la unidad de medida
 
-                //Verificando si selecciono otra imagen
-                if (!txtImgProducto.getText().equals("")) 
-                {
-                    File archivoImagen = new File(txtImgProducto.getText());//recuperando la url de la imagen
-                    byte[] bytefile = new byte[(int) archivoImagen.length()];
-                    FileInputStream fs = new FileInputStream(archivoImagen);
-                    fs.read(bytefile);
-                    fs.close();
-                    pro.setImagen(bytefile);
+                    //Verificando si selecciono otra imagen
+                    if (!txtImgProducto.getText().equals("")) {
+                        File archivoImagen = new File(txtImgProducto.getText());//recuperando la url de la imagen
+                        byte[] bytefile = new byte[(int) archivoImagen.length()];
+                        FileInputStream fs = new FileInputStream(archivoImagen);
+                        fs.read(bytefile);
+                        fs.close();
+                        pro.setImagen(bytefile);
+                    }
+                    //fin de la verificacion de la seleccion de la imagen
+
+                    ProductoDao proDao = new ProductoDao();
+                    if (proDao.actualizarProducto(pro)) {
+                        JOptionPane.showMessageDialog(this, "Actualización correcta", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                        limpiarCampos();
+                        bloquearCamposProducto();
+                        listarDatos();
+                        setIcono();
+                        btnEdicion.setText("Habilitar Edición");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Faltan campos por llenar..!!", "Mensaje", JOptionPane.WARNING_MESSAGE);
                 }
-                //fin de la verificacion de la seleccion de la imagen
-                
-                ProductoDao proDao = new ProductoDao();
-                if (proDao.actualizarProducto(pro)) 
-                {
-                    JOptionPane.showMessageDialog(this, "Actualización correcta", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-                    limpiarCampos();
-                    bloquearCamposProducto();
-                    listarDatos();
-                    setIcono();
-                    btnEdicion.setText("Habilitar Edición");
-                }
-            } 
-            else 
-            {
-                JOptionPane.showMessageDialog(this, "Faltan campos por llenar..!!","Mensaje", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "El codigo ingresado ya esta registrado..!!", "mensaje", JOptionPane.ERROR_MESSAGE);
             }
-        } 
-        catch (Exception e) 
-        {
+
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }        // TODO add your handling code here:
 
@@ -995,9 +1001,7 @@ public class vtnProducto extends javax.swing.JInternalFrame {
             btnActualizar.setEnabled(true);
             btnEliminar.setEnabled(true);
             btnEdicion.setText("  Cancelar  ");
-        } 
-        else 
-        {
+        } else {
             limpiarCampos();
             bloquearCamposProducto();
             btnEdicion.setEnabled(true);

@@ -44,7 +44,6 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         listarCombos();
         btnActualizar.setEnabled(false);
         btnModificar.setEnabled(false);
-        
 
         //------inicializacion de la bandera ---------
         // valor=1 si esta en modo registro
@@ -687,51 +686,59 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             List<String> validar = new ArrayList<>();
             validar.add(txtNombreProdCombo.getText());
             validar.add(txtCodigoCombo.getText());
+            ComboProductoDao pr=new ComboProductoDao();
+            if (pr.buscarCodigo(txtCodigoCombo.getText())==false)//Verificando si el codigo ingresado no esta registrado 
+            {
+                if (Validaciones.validarCampos(validar)) {
+                    if (tablaComboProducto.getRowCount() > 0) {
+                        double precioM = Double.parseDouble(txtPrecioComboProd.getText());
+                        double precioC = Double.parseDouble(txtPrecioCliente.getText());
+                        double precioMa = Double.parseDouble(txtPrecioMayorista.getText());
 
-            if (Validaciones.validarCampos(validar)) {
-                if (tablaComboProducto.getRowCount() > 0) {
-                    double precioM = Double.parseDouble(txtPrecioComboProd.getText());
-                    double precioC = Double.parseDouble(txtPrecioCliente.getText());
-                    double precioMa = Double.parseDouble(txtPrecioMayorista.getText());
+                        if (precioM > 0 && precioC > 0 && precioMa > 0) {
+                            //SETEANDO LOS CAMPOS COMBO PRODUCTO
+                            ComboProducto cmb = new ComboProducto();
+                            cmb.setCodigo(txtCodigoCombo.getText());//codigo comboProducto
+                            cmb.setNombre(txtNombreProdCombo.getText());//nombre comboProducto
+                            cmb.setEstado(comboEstado.getSelectedItem().toString());// estado
+                            cmb.setPrecioMercado(txtPrecioComboProd.getText());//precio Mercado comboProducto
+                            cmb.setPrecioCliente(txtPrecioCliente.getText());//precio Cliente comboProducto
+                            cmb.setPrecioMayorista(txtPrecioMayorista.getText());//precio Mayorista comboProducto
 
-                    if (precioM > 0 && precioC > 0 && precioMa > 0) {
-                        //SETEANDO LOS CAMPOS COMBO PRODUCTO
-                        ComboProducto cmb = new ComboProducto();
-                        cmb.setCodigo(txtCodigoCombo.getText());//codigo comboProducto
-                        cmb.setNombre(txtNombreProdCombo.getText());//nombre comboProducto
-                        cmb.setEstado(comboEstado.getSelectedItem().toString());// estado
-                        cmb.setPrecioMercado(txtPrecioComboProd.getText());//precio Mercado comboProducto
-                        cmb.setPrecioCliente(txtPrecioCliente.getText());//precio Cliente comboProducto
-                        cmb.setPrecioMayorista(txtPrecioMayorista.getText());//precio Mayorista comboProducto
+                            //RECUPERANDO LOS ITEMS DEL COMBOPRODUCTO
+                            Set<ItemsCombo> items = new HashSet<>();
+                            for (int i = 0; i < tablaComboProducto.getRowCount(); i++) {
+                                ItemsCombo det = new ItemsCombo();
+                                det.setIdProducto(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 0))));
+                                det.setCantidad(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 2))));
+                                det.setCombo(cmb);
+                                items.add(det);
+                            }
+                            cmb.setItemsCombo(items);
 
-                        //RECUPERANDO LOS ITEMS DEL COMBOPRODUCTO
-                        Set<ItemsCombo> items = new HashSet<>();
-                        for (int i = 0; i < tablaComboProducto.getRowCount(); i++) {
-                            ItemsCombo det = new ItemsCombo();
-                            det.setIdProducto(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 0))));
-                            det.setCantidad(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 2))));
-                            det.setCombo(cmb);
-                            items.add(det);
+                            //REALIZANDO LA INSERCION DE LOS DATOS
+                            ComboProductoDao cmbDao = new ComboProductoDao();
+                            if (cmbDao.registarComboProducto(cmb)) {
+                                JOptionPane.showMessageDialog(this, "Registro de Combo Producto Correcto..!!", "Mensaje..", JOptionPane.INFORMATION_MESSAGE);
+                                limpiarCampos();
+                                listarCombos();
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Los precios deben ser mayor a cero..", "Mensaje", JOptionPane.WARNING_MESSAGE);
                         }
-                        cmb.setItemsCombo(items);
-
-                        //REALIZANDO LA INSERCION DE LOS DATOS
-                        ComboProductoDao cmbDao = new ComboProductoDao();
-                        if (cmbDao.registarComboProducto(cmb)) {
-                            JOptionPane.showMessageDialog(this, "Registro de Combo Producto Correcto..!!", "Mensaje..", JOptionPane.INFORMATION_MESSAGE);
-                            limpiarCampos();
-                            listarCombos();
-                        }
-
                     } else {
-                        JOptionPane.showMessageDialog(this, "Los precios deben ser mayor a cero..", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Adicione un producto(s)", "Mensaje", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Adicione un producto(s)", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Faltan campos por llenar", "Mensaje", JOptionPane.WARNING_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(this, "Faltan campos por llenar", "Mensaje", JOptionPane.WARNING_MESSAGE);
+            } 
+            else 
+            {
+                JOptionPane.showMessageDialog(this, "El codigo ingresado ya esta registrado..!!", "Mensaje", JOptionPane.ERROR_MESSAGE);
             }
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error--->" + ex.getMessage(), "Mensaje..", JOptionPane.ERROR_MESSAGE);
 
@@ -755,8 +762,7 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
 
-        if (_banderaActualizar == 1) 
-        {
+        if (_banderaActualizar == 1) {
             DefaultTableModel modelo = (DefaultTableModel) tablaComboProducto.getModel();
             if (tablaComboProducto.getRowCount() > 0) {
                 if (tablaComboProducto.getSelectedRows().length != 0) {
@@ -770,25 +776,18 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             }
         }
         //ingresando en modo de actualizacion
-        if (_banderaActualizar == 0) 
-        {
+        if (_banderaActualizar == 0) {
             DefaultTableModel modelo = (DefaultTableModel) tablaComboProducto.getModel();
 
-            if (tablaComboProducto.getRowCount() > 0) 
-            {
-                if (tablaComboProducto.getSelectedRows().length != 0)
-                {
+            if (tablaComboProducto.getRowCount() > 0) {
+                if (tablaComboProducto.getSelectedRows().length != 0) {
                     int idprod = Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(tablaComboProducto.getSelectedRow(), 0)));
                     Operaciones.eliminarItemComboProducto(idprod, this.getObjComboProducto().getIdcomboProducto());
                     modelo.removeRow(tablaComboProducto.getSelectedRow());
-                } 
-                else 
-                {
+                } else {
                     JOptionPane.showMessageDialog(null, "Seleccione el producto a eliminar ", "Mensaje..", JOptionPane.WARNING_MESSAGE);
                 }
-            } 
-            else 
-            {
+            } else {
                 JOptionPane.showMessageDialog(null, "No tiene items a eliminar..!! ", "Mensaje..", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -874,8 +873,7 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
                 DefaultTableModel modelodetalle = (DefaultTableModel) tablaComboProducto.getModel();//creando el modelo pára llenar los datos al JTableje
                 Object[] fila = new Object[modelodetalle.getColumnCount()];
                 limpiarTabla(tablaComboProducto);
-                for (int i = 0; i < detalle.size(); i++) 
-                {
+                for (int i = 0; i < detalle.size(); i++) {
                     // JOptionPane.showMessageDialog(rootPane, "DIM-->" + i);
                     fila[0] = detalle.get(i)[0];//id
                     fila[1] = detalle.get(i)[1];//producto
@@ -883,9 +881,9 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
 
                     modelodetalle.addRow(fila);
                 }
-                
-                _banderaActualizar=0;//cambiando al modo actualizar
-                
+
+                _banderaActualizar = 0;//cambiando al modo actualizar
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error al recuperar los items del combo" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
             }
@@ -904,18 +902,15 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             validar.add(txtNombreProdCombo.getText());
             validar.add(txtCodigoCombo.getText());
 
-            if (Validaciones.validarCampos(validar)) 
-            {
-                if (tablaComboProducto.getRowCount() > 0) 
-                {
+            if (Validaciones.validarCampos(validar)) {
+                if (tablaComboProducto.getRowCount() > 0) {
                     double precioM = Double.parseDouble(txtPrecioComboProd.getText());
                     double precioC = Double.parseDouble(txtPrecioCliente.getText());
                     double precioMa = Double.parseDouble(txtPrecioMayorista.getText());
 
-                    if (precioM > 0 && precioC > 0 && precioMa > 0) 
-                    {
+                    if (precioM > 0 && precioC > 0 && precioMa > 0) {
                         //SETEANDO LOS CAMPOS COMBO PRODUCTO
-                        ComboProducto cmb =this.getObjComboProducto();
+                        ComboProducto cmb = this.getObjComboProducto();
                         //cmb.setIdcomboProducto(this.getIdCombo());
                         cmb.setCodigo(txtCodigoCombo.getText());//codigo comboProducto
                         cmb.setNombre(txtNombreProdCombo.getText());//nombre comboProducto
@@ -926,25 +921,23 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
 
                         //RECUPERANDO LOS ITEMS DEL COMBOPRODUCTO
                         Set<ItemsCombo> items = new HashSet<>();
-                        for (int i = 0; i < tablaComboProducto.getRowCount(); i++) 
-                        {
+                        for (int i = 0; i < tablaComboProducto.getRowCount(); i++) {
                             ItemsCombo det = new ItemsCombo();
                             det.setIdProducto(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 0))));
                             det.setCantidad(Integer.parseInt(String.valueOf(tablaComboProducto.getValueAt(i, 2))));
                             det.setCombo(cmb);
                             items.add(det);
                         }
-                        
+
                         cmb.setItemsCombo(items);
 
                         //REALIZANDO LA INSERCION DE LOS DATOS
                         ComboProductoDao cmbDao = new ComboProductoDao();
-                        if (cmbDao.actualizarComboProducto(cmb)) 
-                        {
+                        if (cmbDao.actualizarComboProducto(cmb)) {
                             JOptionPane.showMessageDialog(this, "Actualizacion del Combo Producto Correcto..!!", "Mensaje..", JOptionPane.INFORMATION_MESSAGE);
                             limpiarCampos();
                             listarCombos();
-                            _banderaActualizar=1;//cambiando al modo registro
+                            _banderaActualizar = 1;//cambiando al modo registro
                         }
 
                     } else {

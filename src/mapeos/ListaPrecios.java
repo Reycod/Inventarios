@@ -85,4 +85,8 @@ public class ListaPrecios implements Serializable
     public void setListaProductos(Set<Productos_lista_precios> listaProductos) {
         this.listaProductos = listaProductos;
     }
+
+    public void setFecha(String fecha) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

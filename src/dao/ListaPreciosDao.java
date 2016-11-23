@@ -7,7 +7,9 @@
 package dao;
 
 import mapeos.Compra;
+import mapeos.ListaPrecios;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
@@ -37,12 +39,38 @@ public class ListaPreciosDao {
         throw new HibernateException("Ocurrio un error en la capa de acceso a datos");
     }
 
-    public boolean registarListaPrecios(Compra cm) throws Exception 
+    public boolean registarListaPrecios(ListaPrecios lp) throws Exception 
     {
         iniciarOperacion();
-        sesion.save(cm);
+        sesion.save(lp);
         tx.commit();
         sesion.close();
         return true;
+    }
+    
+    //Metodo que realiza la busqueda de un NOMBRE duplicado para realizar la insercion en la BD
+    public ListaPrecios BuscarNombre(String nombre)
+    {
+        ListaPrecios lp=null;
+        iniciarOperacion();
+        Query query = sesion.createQuery(" From ListaPrecios Where nombre=?");
+        query.setString(0, nombre);
+        lp=(ListaPrecios) query.uniqueResult();
+        tx.commit();
+        sesion.close();
+        return lp;
+    }
+    
+    //Metodo que realiza la busqueda de un CODIGO duplicado para realizar la insercion en la BD
+    public ListaPrecios BuscarCodigo(String codigo)
+    {
+        ListaPrecios lp=null;
+        iniciarOperacion();
+        Query query = sesion.createQuery("From ListaPrecios Where codigo=?");
+        query.setString(0, codigo);
+        lp=(ListaPrecios) query.uniqueResult();
+        tx.commit();
+        sesion.close();
+        return lp;
     }
 }

@@ -7,6 +7,7 @@ package dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import mapeos.ComboProducto;
 import mapeos.Producto;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -153,5 +154,31 @@ public class ProductoDao
         tx.commit();
         sesion.close();
         return true;
+    }
+    
+    
+    //Metodo que verifica si el codigo ingresado ya esta registrado 
+    public  boolean buscarCodigoRepetido(String codigo) 
+    {
+        ComboProducto cm=null;
+        Producto pro=null;
+        iniciarOperacion();
+        Query query=sesion.createQuery("From ComboProducto Where codigo=?");
+        query.setString(0, codigo);
+        cm=(ComboProducto) query.uniqueResult();
+        if(cm!=null)
+        {
+            return true;//TRUE= codigo ya regitrado
+        }
+        
+        Query query2=sesion.createQuery("From Producto Where codigoproducto=?");
+        query2.setString(0, codigo);
+        pro=(Producto) query2.uniqueResult();
+        sesion.close();
+        if(pro!=null)
+        {
+            return true;//TRUE= codigo ya regitrado
+        }
+        return false;//FALSE= codigo no registrado y listo para regitrarse
     }
 }

@@ -671,10 +671,14 @@ public class vtnOD extends javax.swing.JInternalFrame {
                         validaVentana = null;
                         ContadorPanelActividad.contadorOC();//actualizando el contador de actividad
                     }
-                } else {
+                } 
+                else 
+                {
                     JOptionPane.showMessageDialog(this, "Adicione un producto(s) a comprar..!!", "Mensaje..", JOptionPane.WARNING_MESSAGE);
                 }
-            } else {
+            } 
+            else 
+            {
                 JOptionPane.showMessageDialog(this, "Faltan campos por llenar..!!", "Mensaje..", JOptionPane.WARNING_MESSAGE);
             }
 

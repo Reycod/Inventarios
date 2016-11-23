@@ -14,10 +14,8 @@ import view.vtnPrincipal;
 
 /**
  *
- * @author Ing. Reynaldo Rios
- * RWebDesigners
- * Todos los derechos reservados de autor
- * La Paz Bolvia - 2016
+ * @author Ing. Reynaldo Rios RWebDesigners Todos los derechos reservados de
+ * autor La Paz Bolvia - 2016
  */
 public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
 
@@ -37,29 +35,24 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
         cargarTabla(idAlm);
 
     }
-    
+
     //Metodo que realiza el listado de los datos en un JTable de java
-    public void cargarTabla(int idAlmacen) 
-    {
-        try 
-        {
+    public void cargarTabla(int idAlmacen) {
+        try {
             DefaultTableModel modelo = (DefaultTableModel) this.tablaAddProducto.getModel();//creando el modela ára llenar los datos al JTableje
             limpiarTabla(tablaAddProducto);
             //realizando la consulta para realizar el listado de los datos
             InventarioDao invDao = new InventarioDao();
             List<Object[]> lista = invDao.kardexInventarioAlmacen(idAlmacen);//obteniendo el listado del Kardex por Almacen
             Object[] fila = new Object[modelo.getColumnCount()];
-            if (lista.size() > 0) 
-            {
+            if (lista.size() > 0) {
                 for (int i = 0; i < lista.size(); i++) {
                     fila[0] = lista.get(i)[5];//Idproducto
                     fila[1] = lista.get(i)[1];//nombre producto
-                 
+
                     modelo.addRow(fila);
                 }
-            } 
-            else 
-            {
+            } else {
                 JOptionPane.showMessageDialog(null, "El almacen seleccionado no tiene productos..!!", "Mensaje..", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
@@ -79,20 +72,18 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
         }
     }
-    
+
     //Metodo que verifica si el item seleccionado esta repetido en la tabla
-    public boolean buscarRepetidos(int id) 
-    {
+    public boolean buscarRepetidos(int id) {
         DefaultTableModel modelo = (DefaultTableModel) vtnDefinicionPrecios.tablaProductosPrecio.getModel();//recuperando la tabla OC
-        for (int i = 0; i < modelo.getRowCount(); i++) 
-        {
-            if (Integer.parseInt((String) vtnDefinicionPrecios.tablaProductosPrecio.getValueAt(i, 0)) == id)
-            {
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            if (Integer.parseInt((String) vtnDefinicionPrecios.tablaProductosPrecio.getValueAt(i, 0)) == id) {
                 return true;
             }
         }
         return false;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -180,6 +171,11 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
         txtPrecioProdLista.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         txtPrecioProdLista.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPrecioProdLista.setText("0.0");
+        txtPrecioProdLista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioProdListaKeyTyped(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/agregar.png"))); // NOI18N
@@ -235,47 +231,61 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        try 
-        {
-            if (tablaAddProducto.getSelectedRows().length != 0) 
-            {
+        try {
+            if (tablaAddProducto.getSelectedRows().length != 0) {
                 DefaultTableModel modelo = (DefaultTableModel) vtnDefinicionPrecios.tablaProductosPrecio.getModel();//creando el modelo pára llenar los datos al JTableje
                 //realizando la consulta para realizar el listado de los datos
                 Object[] fila = new Object[modelo.getColumnCount()];
                 //String valor = String.valueOf(tablaAdicionarPro.getValueAt(tablaAdicionarPro.getSelectedRow(), 2));//precio
-                double valor = Double.parseDouble(txtPrecioProdLista.getText());//recuperando el precio
-                if (valor>0) 
+                if (txtPrecioProdLista.getText().length() > 0) 
                 {
-                    
-                    int idbuscar = Integer.parseInt(String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 0)));
-
-                    if (!buscarRepetidos(idbuscar)) 
+                    double valor = Double.parseDouble(txtPrecioProdLista.getText());//recuperando el precio
+                    if (valor > 0) 
                     {
-                        fila[0] = String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 0));//ID PRODUCTO
-                        fila[1] = String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 1));//producto
-                        fila[2]=String.valueOf(valor);
-                        modelo.addRow(fila);//adicionando la fila a la tabla
-                        this.dispose();
-                        validaVentana = null;
+                        int idbuscar = Integer.parseInt(String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 0)));
+
+                        if (!buscarRepetidos(idbuscar)) {
+                            fila[0] = String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 0));//ID PRODUCTO
+                            fila[1] = String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 1));//producto
+                            fila[2] = String.valueOf(valor);
+                            modelo.addRow(fila);//adicionando la fila a la tabla
+                            this.dispose();
+                            validaVentana = null;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "El producto ya fue añadido..!!", "Mensaje...", JOptionPane.ERROR_MESSAGE);
+                        }
                     } 
                     else 
                     {
-                        JOptionPane.showMessageDialog(null, "El producto ya fue añadido..!!", "Mensaje...", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "El precio no puede ser Cero", "Mensaje...", JOptionPane.ERROR_MESSAGE);
                     }
-                } 
+                }
                 else 
                 {
-                    JOptionPane.showMessageDialog(null, "El precio no puede ser 0 ", "Mensaje..", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese el precio del producto ", "Mensaje..", JOptionPane.ERROR_MESSAGE);
                 }
-            } 
-            else 
-            {
+            } else {
                 JOptionPane.showMessageDialog(null, "Seleccione un producto ", "Mensaje..", JOptionPane.WARNING_MESSAGE);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error " + e.getMessage(), "Mensaje..", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtPrecioProdListaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioProdListaKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+//        if (c < '0' || c > '9') {
+//            evt.consume();
+//        }
+        if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != '.') {
+            evt.consume();
+        }
+        if (evt.getKeyChar() == '.' && txtPrecioProdLista.getText().contains(".")) {
+            evt.consume();
+        }
+
+    }//GEN-LAST:event_txtPrecioProdListaKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
