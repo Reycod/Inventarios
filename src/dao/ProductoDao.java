@@ -118,6 +118,18 @@ public class ProductoDao
         sesion.close();
         return pro;
     }
+    //Metodo que realiza la busqueda de un producto para el filtro por nombre
+    public List<Object[]> buscarProductoFiltroBYNombreByAlmacen(String nom, int idAlmacen) throws Exception 
+    {
+        List<Object[]> resultado;
+        iniciarOperacion();
+        Query query = sesion.createQuery("SELECT p.idproducto,p.nombre,iv.stock FROM Producto p, Inventario iv WHERE iv.producto_idproducto=idproducto and iv.almacen_idalmacen=? and nombre like "+"'"+nom+"%"+"'");
+        query.setInteger(0,idAlmacen);
+        System.out.println(query);
+        resultado = query.list();
+        sesion.close();
+        return resultado;
+    }
     
     //Metodo que realiza la busqueda de un producto para el filtro por nombre
     public List<Producto> buscarProductoFiltro(String nom) throws Exception 

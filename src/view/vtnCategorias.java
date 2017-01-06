@@ -33,6 +33,12 @@ public class vtnCategorias extends javax.swing.JInternalFrame {
 
     public vtnCategorias() {
         initComponents();
+        /*ALINEANDO LA VENTANA AL CENTRO*/
+        int a = vtnPrincipal.sysMDI.getWidth() - this.getWidth();
+        int b = vtnPrincipal.sysMDI.getHeight() - this.getHeight();
+        setLocation(a / 2, b / 2);
+        //FIN DE LA ALINEACION DE LA VENTANA
+
         bloquearCamposCategoria();
         listarDatos();
     }

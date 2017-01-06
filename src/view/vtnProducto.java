@@ -41,9 +41,12 @@ public class vtnProducto extends javax.swing.JInternalFrame {
      * Creates new form vtnProducto
      */
     private Producto ObjProducto = new Producto();//Objeto global
+    public static String validaVentana;//variable que valida si la ventana ya se encuantra activa
+    
 
     public vtnProducto() {
         initComponents();
+        validaVentana = "x";//insertando un valor a la variable que valida a la ventana
         cargarCategorias();//llenando la el combo que contiene a las categorias
         cargarProveedores();//cargando el combo que contiene los proveedoresno
         cargarUnidadesMedida();//cargando las unidades de medida
@@ -276,6 +279,23 @@ public class vtnProducto extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
 
         setTitle("Gestión de productos");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -502,9 +522,8 @@ public class vtnProducto extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(comboCategoria, 0, 134, Short.MAX_VALUE)
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(comboProv, 0, 134, Short.MAX_VALUE)
-                                .addComponent(comboUnidades, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(comboProv, 0, 134, Short.MAX_VALUE)
+                            .addComponent(comboUnidades, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel5Layout.setVerticalGroup(
@@ -905,7 +924,8 @@ public class vtnProducto extends javax.swing.JInternalFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
 
-        try {
+        try 
+        {
             List<String> validar = new ArrayList<>();
             validar.add(txtCodigoPro.getText());
             validar.add(txtDesPro.getText());
@@ -916,8 +936,8 @@ public class vtnProducto extends javax.swing.JInternalFrame {
 
             ProductoDao p = new ProductoDao();
 
-            if (p.buscarCodigoRepetido(txtCodigoPro.getText()) == false)//validando si el codigo se encuantra registrado 
-            {
+//            if (p.buscarCodigoRepetido(txtCodigoPro.getText()) == false)//validando si el codigo se encuantra registrado 
+//            {
 
                 if (Validaciones.validarCampos(validar)) {
 
@@ -981,9 +1001,9 @@ public class vtnProducto extends javax.swing.JInternalFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "Faltan campos por llenar..!!", "Mensaje", JOptionPane.WARNING_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(this, "El codigo ingresado ya esta registrado..!!", "mensaje", JOptionPane.ERROR_MESSAGE);
-            }
+//            } else {
+//                JOptionPane.showMessageDialog(this, "El codigo ingresado ya esta registrado..!!", "mensaje", JOptionPane.ERROR_MESSAGE);
+//            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -1001,7 +1021,9 @@ public class vtnProducto extends javax.swing.JInternalFrame {
             btnActualizar.setEnabled(true);
             btnEliminar.setEnabled(true);
             btnEdicion.setText("  Cancelar  ");
-        } else {
+        } 
+        else
+        {
             limpiarCampos();
             bloquearCamposProducto();
             btnEdicion.setEnabled(true);
@@ -1047,6 +1069,11 @@ public class vtnProducto extends javax.swing.JInternalFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtPrecioProKeyTyped
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        validaVentana=null;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -28,7 +28,6 @@ import view.ventas.vtnComboProducto;
 import view.ventas.vtnDefinicionPrecios;
 import view.ventas.vtnVentas;
 
-
 /**
  *
  * @author Reynaldo
@@ -449,6 +448,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
         jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/ventas.png"))); // NOI18N
         jMenu7.setText("Ventas");
 
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/menu/Dollar.png"))); // NOI18N
         jMenuItem9.setText("Venta/Salida");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -457,6 +457,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
         });
         jMenu7.add(jMenuItem9);
 
+        jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/menu/Buy.png"))); // NOI18N
         jMenuItem10.setText("Armar combo");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -643,14 +644,23 @@ public class vtnPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        vtnProducto pro = new vtnProducto();
-        pro.setTitle("Gestión de productos");
-        pro.setResizable(false);//no es redimencionable
-        pro.setMaximizable(false);//no se puede maximizar
-        pro.setClosable(true);//si se puede cerra la ventana
-        pro.setIconifiable(true);
-        sysMDI.add(pro);
-        pro.setVisible(true);        // TODO add your handling code here:
+
+        String varValidacion = vtnProducto.validaVentana;
+        if (varValidacion == null) {
+
+            vtnProducto pro = new vtnProducto();
+            pro.setTitle("Gestión de productos");
+            pro.setResizable(false);//no es redimencionable
+            pro.setMaximizable(false);//no se puede maximizar
+            pro.setClosable(true);//si se puede cerra la ventana
+            pro.setIconifiable(true);
+            sysMDI.add(pro);
+            pro.setVisible(true);
+        }
+        else 
+        {
+            JOptionPane.showMessageDialog(this, "La ventana gestión de de productos\nya esa activa..!!", "Mensaje", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -925,8 +935,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
 
         String varValidacion = vtnVentas.validaVentana;
-        if (varValidacion == null) 
-        {
+        if (varValidacion == null) {
             vtnVentas ven = new vtnVentas();
             ven.setTitle("Ventas");
             ven.setResizable(false);//no es redimencionable
@@ -943,20 +952,17 @@ public class vtnPrincipal extends javax.swing.JFrame {
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
         String varValidacion = vtnComboProducto.validaVentana;
-        if (varValidacion == null) 
-        {
+        if (varValidacion == null) {
             vtnComboProducto ven = new vtnComboProducto();
             ven.setTitle("Armar combo producto");
             ven.setResizable(false);//no es redimencionable
             ven.setMaximizable(false);//no se puede maximizar
             ven.setClosable(true);//si se puede cerra la ventana
-            // alm.setIconifiable(true);
+            ven.setIconifiable(true);
             sysMDI.add(ven);
             ven.setVisible(true);
-        } 
-        else 
-        {
-            JOptionPane.showMessageDialog(this, "La ventana armar combo producto\nya esa activa..!!", null, JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "La ventana armar combo producto\nya esa activa..!!", "Mensaje", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
@@ -964,8 +970,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         // TODO add your handling code here:
         String varValidacion = vtnDefinicionPrecios.validaVentana;
-        if (varValidacion == null) 
-        {
+        if (varValidacion == null) {
             vtnDefinicionPrecios ven = new vtnDefinicionPrecios();
             ven.setTitle("Definicion de lista de precios");
             ven.setResizable(false);//no es redimencionable
@@ -974,9 +979,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
             // alm.setIconifiable(true);
             sysMDI.add(ven);
             ven.setVisible(true);
-        } 
-        else 
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "La ventana Definir Lista de Precios\nya esa activa..!!", null, JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem20ActionPerformed

@@ -84,7 +84,8 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
 
     //Metodo que realiza el listado de los datos en un JTable de java
     public void listarCombos() {
-        try {
+        try 
+        {
             DefaultTableModel modelo = (DefaultTableModel) this.tablaCombosArmados.getModel();//creando el modela ára llenar los datos al JTableje
             limpiarTabla(tablaCombosArmados);
             //realizando la consulta para realizar el listado de los datos
@@ -103,7 +104,6 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
                     fila[4] = lista.get(i)[4];//precio cliente
                     fila[5] = lista.get(i)[5];//precio mayorista
                     fila[6] = lista.get(i)[6];//precio Estado
-
                     modelo.addRow(fila);
 
                 }
@@ -165,6 +165,7 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         btnModificar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
+        setTitle("Armar Combo..");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -222,11 +223,13 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         jLabel1.setText("Codigo:");
 
         txtCodigoCombo.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtCodigoCombo.setToolTipText("Codigo asociado al item");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setText("Nombre:");
 
         txtNombreProdCombo.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtNombreProdCombo.setToolTipText("Escriba el nombre del combo");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel6.setText("Estado:");
@@ -277,6 +280,7 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("Seleccione producto");
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/View.png"))); // NOI18N
         jButton1.setText("Examinar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -306,6 +310,7 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jScrollPane1.setToolTipText("Lista de productos que componen el Combo");
         jScrollPane1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
         tablaComboProducto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -370,6 +375,7 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         txtPrecioComboProd.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         txtPrecioComboProd.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPrecioComboProd.setText("0.0");
+        txtPrecioComboProd.setToolTipText("Precio de venta a cliente nuevo");
         txtPrecioComboProd.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPrecioComboProdKeyTyped(evt);
@@ -382,6 +388,7 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         txtPrecioCliente.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         txtPrecioCliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPrecioCliente.setText("0.0");
+        txtPrecioCliente.setToolTipText("Precio de venta a cliente Consecuente");
         txtPrecioCliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPrecioClienteKeyTyped(evt);
@@ -394,6 +401,7 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         txtPrecioMayorista.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         txtPrecioMayorista.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPrecioMayorista.setText("0.0");
+        txtPrecioMayorista.setToolTipText("Precio de venta por mayor");
         txtPrecioMayorista.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPrecioMayoristaKeyTyped(evt);
@@ -519,6 +527,9 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             tablaCombosArmados.getColumnModel().getColumn(0).setMinWidth(40);
             tablaCombosArmados.getColumnModel().getColumn(0).setPreferredWidth(40);
             tablaCombosArmados.getColumnModel().getColumn(0).setMaxWidth(50);
+            tablaCombosArmados.getColumnModel().getColumn(1).setMinWidth(50);
+            tablaCombosArmados.getColumnModel().getColumn(1).setPreferredWidth(50);
+            tablaCombosArmados.getColumnModel().getColumn(1).setMaxWidth(55);
             tablaCombosArmados.getColumnModel().getColumn(6).setMinWidth(80);
             tablaCombosArmados.getColumnModel().getColumn(6).setPreferredWidth(80);
             tablaCombosArmados.getColumnModel().getColumn(6).setMaxWidth(90);
@@ -756,7 +767,6 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
         if (evt.getKeyChar() == '.' && txtPrecioComboProd.getText().contains(".")) {
             evt.consume();
         }
-
     }//GEN-LAST:event_txtPrecioComboProdKeyTyped
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -823,7 +833,8 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
 
     private void tablaCombosArmadosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCombosArmadosMousePressed
         // TODO add your handling code here:
-        try {
+        try 
+        {
             DefaultTableModel modelo = (DefaultTableModel) tablaCombosArmados.getModel();//creando el modelo pára llenar los datos al JTableje
             int idcompra = Integer.parseInt(String.valueOf(tablaCombosArmados.getValueAt(tablaCombosArmados.getSelectedRow(), 0)));//recuperando el id del combo
             ComboProductoDao cmDao = new ComboProductoDao();
@@ -832,12 +843,13 @@ public class vtnComboProducto extends javax.swing.JInternalFrame {
             DefaultTableModel modelodetalle = (DefaultTableModel) tablaItemsCombo.getModel();//creando el modelo pára llenar los datos al JTableje
             Object[] fila = new Object[modelodetalle.getColumnCount()];
             limpiarTabla(tablaItemsCombo);
-            for (int i = 0; i < detalle.size(); i++) {
+            for (int i = 0; i < detalle.size(); i++) 
+            {
                 // JOptionPane.showMessageDialog(rootPane, "DIM-->" + i);
                 fila[0] = detalle.get(i)[0];//id
-                fila[1] = detalle.get(i)[1];//producto
-                fila[2] = detalle.get(i)[2];//cantidad
-
+                fila[1] = detalle.get(i)[1];//codigo
+                fila[2] = detalle.get(i)[2];//producto
+                fila[3] = detalle.get(i)[3];//cantidad
                 modelodetalle.addRow(fila);
             }
         } catch (Exception e) {

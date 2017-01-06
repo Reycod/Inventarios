@@ -5,6 +5,7 @@
  */
 package view.ventas;
 
+import dao.AlmacenDao;
 import dao.InventarioDao;
 import dao.ProductoDao;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
                 for (int i = 0; i < lista.size(); i++) {
                     fila[0] = lista.get(i)[5];//Idproducto
                     fila[1] = lista.get(i)[1];//nombre producto
-                    fila[2] = lista.get(i)[2];//sctok
+                    fila[2] = lista.get(i)[2];//stock
 
                     modelo.addRow(fila);
                 }
@@ -85,19 +86,26 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
             ProductoDao pro = new ProductoDao();
 
             ArrayList<Producto> result = null;
+            List<Object[]> result2=null;
 //            if (String.valueOf(cboParametroPro.getSelectedItem()).equalsIgnoreCase("Codigo")) 
 //            {
 //               // result = BDProducto.listarProductoPorCodigoEstado(txtBuscarPro.getText());
 //
 //            } else 
-            if (String.valueOf(comboByProducto.getSelectedItem()).equalsIgnoreCase("Nombre")) {
-                result = (ArrayList<Producto>) pro.buscarProductoFiltro(txtProd.getText());
-            } else {
+            if (String.valueOf(comboByProducto.getSelectedItem()).equalsIgnoreCase("Nombre")) 
+            {
+                AlmacenDao almDao=new AlmacenDao();
+                result2 = pro.buscarProductoFiltroBYNombreByAlmacen(txtProd.getText(),almDao.buscarAlmacenId(vtnVentas.comboAlmacen.getSelectedItem().toString()));
+                recargarTable2(result2);
+            } 
+            else 
+            {
                 result = (ArrayList<Producto>) pro.listarProductos();
+                recargarTable(result);
             }
-            recargarTable(result);
+            
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al actualizar el listado de los productos" + ex.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al actualizar el listado de los productos" + ex.getMessage()+"--a-a-", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -114,6 +122,25 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
                 fila[0] = lista.get(i).getIdproducto();//id
                 fila[1] = lista.get(i).getNombre();//id
                 //fila[2] = lista.get(i)[2];//id
+                modelo.addRow(fila);
+            }
+        }
+    }
+    
+     //metodo que hace el refrescado de la tabla despues del filtro de datos 
+    public void recargarTable2(List<Object[]> lista) 
+    {
+            
+        DefaultTableModel modelo = (DefaultTableModel) this.tablaAddProd.getModel();//creando el modela ára llenar los datos al JTableje
+        limpiarTabla(tablaAddProd);
+        Object[] fila = new Object[modelo.getColumnCount()];
+        if (lista.size() != 0) 
+        {
+            for (int i = 0; i < lista.size(); i++) 
+            {
+                fila[0] = lista.get(i)[0];//id
+                fila[1] = lista.get(i)[1];//Nombre
+                fila[2] = lista.get(i)[2];//Stock
                 modelo.addRow(fila);
             }
         }
@@ -139,6 +166,8 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAddProd = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -204,7 +233,7 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
         jLabel4.setText("Buscar por:");
 
         comboByProducto.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        comboByProducto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--------------", "Nombre" }));
+        comboByProducto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre" }));
 
         tablaAddProd.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -233,6 +262,11 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel5.setText("Cantidad:");
+
+        jSpinner1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -249,9 +283,12 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(comboByProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 17, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1)))
                 .addContainerGap())
         );
@@ -268,8 +305,11 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel5)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -306,6 +346,7 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
@@ -316,9 +357,11 @@ public class vtnAddProductoVenta extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable tablaAddProd;
     private javax.swing.JTextField txtProd;
     // End of variables declaration//GEN-END:variables

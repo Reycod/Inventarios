@@ -397,7 +397,6 @@ public class vtnKardexInventario extends javax.swing.JInternalFrame {
         {
             if (comboAlmacen.getSelectedIndex() > 0) 
             {
-
                 AlmacenDao almDao = new AlmacenDao();
                 listarDatosKardex(almDao.buscarAlmacenId(comboAlmacen.getSelectedItem().toString()));
 

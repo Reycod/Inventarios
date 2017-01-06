@@ -61,7 +61,7 @@ public class ComboProductoDao {
     //Metodo que recupera el detalle del comboArmado
     public List<Object[]> listarItemsComboArmado(int idcombo) throws Exception {
         iniciarOperacion();
-        Query query = sesion.createQuery("SELECT i.iditemsCombo,p.nombre,i.cantidad  FROM ItemsCombo i, Producto p WHERE i.combo.idcomboProducto=? and  i. idProducto=p.idproducto");
+        Query query = sesion.createQuery("SELECT i.iditemsCombo,p.codigoproducto,p.nombre,i.cantidad  FROM ItemsCombo i, Producto p WHERE i.combo.idcomboProducto=? and  i. idProducto=p.idproducto");
         query.setInteger(0, idcombo);
         List<Object[]> lista = query.list();
         sesion.close();
