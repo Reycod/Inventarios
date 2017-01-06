@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="mapeos.Productos_lista_precios" table="productos_lista_precios">
+    <class name="mapeos.Productos_lista_precios" table="productoslistaprecios">
         <id name="idproductoslista" type="integer">
             <generator class="identity"/>
         </id>
         <property name="idProducto" column="idProducto"/>
         <property name="precio" column="precio"/>
+        <property name="precioCliente" column="preciocliente"/>
+        <property name="precioMayor" column="preciomayor"/>
+        
         
         <many-to-one name="listaPrecios" class="mapeos.ListaPrecios" fetch="select" >
             <column name="idlistaprecios"/>

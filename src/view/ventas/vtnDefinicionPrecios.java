@@ -13,6 +13,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import mapeos.Almacen;
 import mapeos.ListaPrecios;
 import mapeos.Productos_lista_precios;
@@ -39,7 +42,8 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
         setLocation(a / 2, b / 2);
         /*fin-----*/
         cargarAlmacen();
-
+        listarPrecios();
+        
     }
 
     //Metodo que carga los elementos del almacen
@@ -58,6 +62,55 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error " + ex, null, JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    //Metodo que realiza el listado de las listas de precios 
+    public void listarPrecios() 
+    {
+        try 
+        {
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaListaPrecios.getModel();//creando el modela ára llenar los datos al JTableje
+            limpiarTabla(tablaListaPrecios);
+            //realizando la consulta para realizar el listado de los datos
+            ListaPreciosDao liDao = new ListaPreciosDao();
+            List<Object[]> lista = liDao.listarPrecios();
+            if (lista.size() > 0) 
+            {
+                Object[] fila = new Object[modelo.getColumnCount()];
+                TableColumnModel columnModel = tablaListaPrecios.getColumnModel();
+                boolean pivote = false;
+                for (int i = 0; i < lista.size(); i++) 
+                {
+                    //columnModel.getColumn(i).setPreferredWidth(20);
+                    fila[0] = lista.get(i)[0];//idlista_precios
+                    fila[1] = lista.get(i)[1];//fecha
+                    fila[2] = lista.get(i)[2];//nombre
+                    fila[3] = lista.get(i)[3];//codigo 
+                    fila[4] = lista.get(i)[4];//estado
+                    fila[5] = lista.get(i)[5];//Almacen
+//                    fila[6] = lista.get(i)[6];//precio Estado
+                    modelo.addRow(fila);
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No tiene lista de precios creado..!! ", "Mensaje", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error---->" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    //metodo que realiza el limpiado de la tabla
+    public void limpiarTabla(JTable tabla) {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            int filas = tabla.getRowCount();
+            for (int i = 0; filas > i; i++) {
+                modelo.removeRow(0);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
         }
     }
 
@@ -94,9 +147,9 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaListaPrecios = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        detalleListaPrecios = new javax.swing.JTable();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -154,11 +207,13 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
         jLabel1.setText("Nombre:");
 
         txtListaNombre.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtListaNombre.setToolTipText("Nombre de la lista de precios");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setText("Codigo:");
 
         txCodigoLista.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txCodigoLista.setToolTipText("Codigo asociado a la lista de precios");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel6.setText("Almacen:");
@@ -171,17 +226,31 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "PRODUCTO", "PRECIO"
+                "ID", "PRODUCTO", "PRECIO MERCADO", "PRECIO CLIENTE", "PRECIO MAYORISTA"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tablaProductosPrecio);
         if (tablaProductosPrecio.getColumnModel().getColumnCount() > 0) {
             tablaProductosPrecio.getColumnModel().getColumn(0).setMinWidth(50);
             tablaProductosPrecio.getColumnModel().getColumn(0).setPreferredWidth(50);
             tablaProductosPrecio.getColumnModel().getColumn(0).setMaxWidth(55);
-            tablaProductosPrecio.getColumnModel().getColumn(2).setMinWidth(80);
-            tablaProductosPrecio.getColumnModel().getColumn(2).setPreferredWidth(80);
-            tablaProductosPrecio.getColumnModel().getColumn(2).setMaxWidth(85);
+            tablaProductosPrecio.getColumnModel().getColumn(2).setMinWidth(120);
+            tablaProductosPrecio.getColumnModel().getColumn(2).setPreferredWidth(120);
+            tablaProductosPrecio.getColumnModel().getColumn(2).setMaxWidth(120);
+            tablaProductosPrecio.getColumnModel().getColumn(3).setMinWidth(120);
+            tablaProductosPrecio.getColumnModel().getColumn(3).setPreferredWidth(120);
+            tablaProductosPrecio.getColumnModel().getColumn(3).setMaxWidth(120);
+            tablaProductosPrecio.getColumnModel().getColumn(4).setMinWidth(120);
+            tablaProductosPrecio.getColumnModel().getColumn(4).setPreferredWidth(120);
+            tablaProductosPrecio.getColumnModel().getColumn(4).setMaxWidth(120);
         }
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -317,31 +386,74 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel9.setText("PRODUCTOS Y PRECIOS ESTABLECIDOS");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaListaPrecios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "F. CREACIÓN", "NOMBRE", "CODIGO", "ESTADO", "ALMACEN"
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaListaPrecios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablaListaPreciosMousePressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaListaPrecios);
+        if (tablaListaPrecios.getColumnModel().getColumnCount() > 0) {
+            tablaListaPrecios.getColumnModel().getColumn(0).setMinWidth(50);
+            tablaListaPrecios.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tablaListaPrecios.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
+
+        detalleListaPrecios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "PRODUCTO", "PRECIO MERCADO", "PRECIO CLIENTE", "PRECIO MAYORISTA"
             }
-        ));
-        jScrollPane3.setViewportView(jTable2);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(detalleListaPrecios);
+        if (detalleListaPrecios.getColumnModel().getColumnCount() > 0) {
+            detalleListaPrecios.getColumnModel().getColumn(0).setMinWidth(50);
+            detalleListaPrecios.getColumnModel().getColumn(0).setPreferredWidth(50);
+            detalleListaPrecios.getColumnModel().getColumn(0).setMaxWidth(50);
+            detalleListaPrecios.getColumnModel().getColumn(1).setMinWidth(280);
+            detalleListaPrecios.getColumnModel().getColumn(1).setPreferredWidth(280);
+            detalleListaPrecios.getColumnModel().getColumn(1).setMaxWidth(280);
+            detalleListaPrecios.getColumnModel().getColumn(2).setMinWidth(120);
+            detalleListaPrecios.getColumnModel().getColumn(2).setPreferredWidth(120);
+            detalleListaPrecios.getColumnModel().getColumn(2).setMaxWidth(120);
+            detalleListaPrecios.getColumnModel().getColumn(3).setMinWidth(120);
+            detalleListaPrecios.getColumnModel().getColumn(3).setPreferredWidth(120);
+            detalleListaPrecios.getColumnModel().getColumn(3).setMaxWidth(120);
+            detalleListaPrecios.getColumnModel().getColumn(4).setMinWidth(120);
+            detalleListaPrecios.getColumnModel().getColumn(4).setPreferredWidth(120);
+            detalleListaPrecios.getColumnModel().getColumn(4).setMaxWidth(120);
+        }
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -413,7 +525,8 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
         String varValicadion = vtnAddProductoListaPrecios.validaVentana;//recuperando el valor de la variable de validacion de la ventana
         if (varValicadion == null) {
             try {
-                if (comboAlmacenPrecios.getSelectedIndex() > 0) {
+                if (comboAlmacenPrecios.getSelectedIndex() > 0) 
+                {
                     AlmacenDao almDao = new AlmacenDao();
                     int idAlmacen = almDao.buscarAlmacenId(comboAlmacenPrecios.getSelectedItem().toString());
                     //JOptionPane.showMessageDialog(this, "--->"+idAlmacen);
@@ -426,7 +539,9 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
                     //listaPro.setLocationRelativeTo(null);
 
                     listaPro.setVisible(true);
-                } else {
+                } 
+                else 
+                {
                     JOptionPane.showMessageDialog(this, "Seleccione un Almacen", "Mensaje", JOptionPane.WARNING_MESSAGE);
                 }
             } catch (Exception ex) {
@@ -444,7 +559,8 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
             List<String> validar = new ArrayList<>();
             validar.add(txtListaNombre.getText());
             validar.add(txCodigoLista.getText());
-            if (Validaciones.validarCampos(validar)) {
+            if (Validaciones.validarCampos(validar)) 
+            {
                 ListaPrecios listaPrecios = new ListaPrecios();
                 listaPrecios.setNombre(txtListaNombre.getText());//insertando el nombre
                 listaPrecios.setCodigo(txCodigoLista.getText());//seteando el codigo
@@ -456,10 +572,14 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
                 //JOptionPane.showMessageDialog(this,"-->"+idAlm);
                 //RECUPERANDO EL DETALLE DE LOS ITEMS SELECCIONADOS EN LA TABLA LISTA DE PRECIOS
                 Set<Productos_lista_precios> items = new HashSet<>();
-                for (int i = 0; i < tablaProductosPrecio.getRowCount(); i++) {
+                for (int i = 0; i < tablaProductosPrecio.getRowCount(); i++) 
+                {
                     Productos_lista_precios det = new Productos_lista_precios();
                     det.setIdProducto(Integer.parseInt(String.valueOf(tablaProductosPrecio.getValueAt(i, 0))));
                     det.setPrecio(String.valueOf(tablaProductosPrecio.getValueAt(i, 2)));
+                    det.setPrecioCliente(String.valueOf(tablaProductosPrecio.getValueAt(i, 3)));
+                    det.setPrecioMayor(String.valueOf(tablaProductosPrecio.getValueAt(i, 4)));
+                    
                     det.setListaPrecios(listaPrecios);
                     items.add(det);
                 }
@@ -473,10 +593,13 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
                     {
                         if (lpDao.BuscarCodigo(txCodigoLista.getText())==null)
                         {
-                            if (lpDao.registarListaPrecios(listaPrecios)) {
+                            if (lpDao.registarListaPrecios(listaPrecios)) 
+                            {
                                 JOptionPane.showMessageDialog(this, "Registro de lista de precios correcto.", "Mensaje..", JOptionPane.INFORMATION_MESSAGE);
-                                this.dispose();
-                                validaVentana = null;
+                                limpiarTabla(tablaProductosPrecio);
+                                listarPrecios();
+                                txtListaNombre.setText("");
+                                txCodigoLista.setText("");
                             }
                         } 
                         else 
@@ -498,10 +621,39 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void tablaListaPreciosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaListaPreciosMousePressed
+        // TODO add your handling code here:
+          try 
+        {
+            DefaultTableModel modelo = (DefaultTableModel) tablaListaPrecios.getModel();//creando el modelo pára llenar los datos al JTableje
+            int idListaPrecios = Integer.parseInt(String.valueOf(tablaListaPrecios.getValueAt(tablaListaPrecios.getSelectedRow(), 0)));//recuperando el id del combo
+            ListaPreciosDao liDao = new ListaPreciosDao();
+            List<Object[]> detalle = liDao.listarItemsListaPrecios(idListaPrecios);
+
+            DefaultTableModel modelodetalle = (DefaultTableModel) detalleListaPrecios.getModel();//creando el modelo pára llenar los datos al JTableje
+            Object[] fila = new Object[modelodetalle.getColumnCount()];
+            limpiarTabla(detalleListaPrecios);
+            for (int i = 0; i < detalle.size(); i++) 
+            {
+                // JOptionPane.showMessageDialog(rootPane, "DIM-->" + i);
+                fila[0] = detalle.get(i)[0];//id
+                fila[1] = detalle.get(i)[1];//nombre
+                fila[2] = detalle.get(i)[2];//precio mercado
+                fila[3] = detalle.get(i)[3];//precio cliente
+                fila[4] = detalle.get(i)[4];//precio Mayorista
+                
+                modelodetalle.addRow(fila);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al recuperar el detalle de la compra " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_tablaListaPreciosMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox comboAlmacenPrecios;
     private javax.swing.JComboBox comboEstadoLPrecio;
+    private javax.swing.JTable detalleListaPrecios;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -522,8 +674,7 @@ public class vtnDefinicionPrecios extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tablaListaPrecios;
     public static javax.swing.JTable tablaProductosPrecio;
     private javax.swing.JTextField txCodigoLista;
     private javax.swing.JTextField txtListaNombre;

@@ -17,6 +17,8 @@ public class Productos_lista_precios implements Serializable{
     private int idproductoslista;
     private int idProducto;
     private String precio;
+    private String precioCliente;
+    private String precioMayor;
     private ListaPrecios listaPrecios;
 
     public Productos_lista_precios() {
@@ -52,6 +54,22 @@ public class Productos_lista_precios implements Serializable{
 
     public void setListaPrecios(ListaPrecios listaPrecios) {
         this.listaPrecios = listaPrecios;
+    }
+
+    public String getPrecioCliente() {
+        return precioCliente;
+    }
+
+    public void setPrecioCliente(String precioCliente) {
+        this.precioCliente = precioCliente;
+    }
+
+    public String getPrecioMayor() {
+        return precioMayor;
+    }
+
+    public void setPrecioMayor(String precioMayor) {
+        this.precioMayor = precioMayor;
     }
     
     

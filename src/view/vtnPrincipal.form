@@ -97,6 +97,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem20">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/sysInventory/iconos/menu/New document.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Definir lista precios"/>
               </Properties>
               <Events>

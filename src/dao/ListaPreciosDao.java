@@ -6,6 +6,7 @@
 
 package dao;
 
+import java.util.List;
 import mapeos.Compra;
 import mapeos.ListaPrecios;
 import org.hibernate.HibernateException;
@@ -73,4 +74,24 @@ public class ListaPreciosDao {
         sesion.close();
         return lp;
     }
+    
+    //Metodo que realiza el listado de los precios creados
+    public List<Object[]> listarPrecios() throws Exception {
+        iniciarOperacion();
+        Query query = sesion.createQuery("Select l.idlista_precios,l.fecha,l.nombre,l.codigo,l.estado,a.nombre from ListaPrecios As l, Almacen As a where a.idalmacen=l.idAlmacen");
+        List<Object[]> lista = query.list();
+        sesion.close();
+        return lista;
+    }
+    
+    //Metodo que recupera el detalle de la lista de precios creada
+    public List<Object[]> listarItemsListaPrecios(int idListaPrecios) throws Exception {
+        iniciarOperacion();
+        Query query = sesion.createQuery("SELECT d.idproductoslista,p.nombre,d.precio,d.precioCliente,d.precioMayor FROM Productos_lista_precios As d, Producto As p WHERE d.idProducto=p.idproducto and d.listaPrecios.idlista_precios=?");
+        query.setInteger(0, idListaPrecios);
+        List<Object[]> lista = query.list();
+        sesion.close();
+        return lista;
+    }
+
 }

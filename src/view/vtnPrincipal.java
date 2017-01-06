@@ -466,6 +466,7 @@ public class vtnPrincipal extends javax.swing.JFrame {
         });
         jMenu7.add(jMenuItem10);
 
+        jMenuItem20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sysInventory/iconos/menu/New document.png"))); // NOI18N
         jMenuItem20.setText("Definir lista precios");
         jMenuItem20.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

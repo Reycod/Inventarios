@@ -52,8 +52,11 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
 
                     modelo.addRow(fila);
                 }
-            } else {
+            } 
+            else 
+            {
                 JOptionPane.showMessageDialog(null, "El almacen seleccionado no tiene productos..!!", "Mensaje..", JOptionPane.ERROR_MESSAGE);
+                this.dispose();
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al recuperar información del Almacen " + e.getMessage(), "Mensaje..", JOptionPane.ERROR_MESSAGE);
@@ -101,6 +104,10 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         txtPrecioProdLista = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txtPrecioCliente = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtPrecioMayor = new javax.swing.JTextField();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -137,7 +144,7 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,7 +173,7 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
         }
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel1.setText("Precio:");
+        jLabel1.setText("Precio mercado:");
 
         txtPrecioProdLista.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         txtPrecioProdLista.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -186,24 +193,57 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel4.setText("Precio cliente:");
+
+        txtPrecioCliente.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtPrecioCliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPrecioCliente.setText("0.0");
+        txtPrecioCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioClienteKeyTyped(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel5.setText("Precio mayor:");
+
+        txtPrecioMayor.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtPrecioMayor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPrecioMayor.setText("0.0");
+        txtPrecioMayor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioMayorKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPrecioProdLista, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPrecioProdLista, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPrecioCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPrecioMayor))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton1)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -213,7 +253,11 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtPrecioProdLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrecioProdLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtPrecioCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtPrecioMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -231,8 +275,10 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        try {
-            if (tablaAddProducto.getSelectedRows().length != 0) {
+        try 
+        {
+            if (tablaAddProducto.getSelectedRows().length != 0) 
+            {
                 DefaultTableModel modelo = (DefaultTableModel) vtnDefinicionPrecios.tablaProductosPrecio.getModel();//creando el modelo pára llenar los datos al JTableje
                 //realizando la consulta para realizar el listado de los datos
                 Object[] fila = new Object[modelo.getColumnCount()];
@@ -240,14 +286,21 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
                 if (txtPrecioProdLista.getText().length() > 0) 
                 {
                     double valor = Double.parseDouble(txtPrecioProdLista.getText());//recuperando el precio
-                    if (valor > 0) 
+                    double valorCliente = Double.parseDouble(txtPrecioCliente.getText());//recuperando el precio
+                    double valorMayor = Double.parseDouble(txtPrecioMayor.getText());//recuperando el precio
+                    
+                    if (valor > 0 && valorCliente>0 && valorMayor>0) 
                     {
                         int idbuscar = Integer.parseInt(String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 0)));
 
-                        if (!buscarRepetidos(idbuscar)) {
+                        if (!buscarRepetidos(idbuscar)) 
+                        {
                             fila[0] = String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 0));//ID PRODUCTO
                             fila[1] = String.valueOf(tablaAddProducto.getValueAt(tablaAddProducto.getSelectedRow(), 1));//producto
                             fila[2] = String.valueOf(valor);
+                            fila[3] = String.valueOf(valorCliente);
+                            fila[4] = String.valueOf(valorMayor);
+                            
                             modelo.addRow(fila);//adicionando la fila a la tabla
                             this.dispose();
                             validaVentana = null;
@@ -257,7 +310,7 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
                     } 
                     else 
                     {
-                        JOptionPane.showMessageDialog(null, "El precio no puede ser Cero", "Mensaje...", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Los precios deben ser mayores a  Cero", "Mensaje...", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 else 
@@ -284,8 +337,35 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
         if (evt.getKeyChar() == '.' && txtPrecioProdLista.getText().contains(".")) {
             evt.consume();
         }
-
     }//GEN-LAST:event_txtPrecioProdListaKeyTyped
+
+    private void txtPrecioClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioClienteKeyTyped
+        // TODO add your handling code here:
+              char c = evt.getKeyChar();
+//        if (c < '0' || c > '9') {
+//            evt.consume();
+//        }
+        if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != '.') {
+            evt.consume();
+        }
+        if (evt.getKeyChar() == '.' && txtPrecioCliente.getText().contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPrecioClienteKeyTyped
+
+    private void txtPrecioMayorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioMayorKeyTyped
+        // TODO add your handling code here:
+              char c = evt.getKeyChar();
+//        if (c < '0' || c > '9') {
+//            evt.consume();
+//        }
+        if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != '.') {
+            evt.consume();
+        }
+        if (evt.getKeyChar() == '.' && txtPrecioMayor.getText().contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPrecioMayorKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -293,9 +373,13 @@ public class vtnAddProductoListaPrecios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaAddProducto;
+    private javax.swing.JTextField txtPrecioCliente;
+    private javax.swing.JTextField txtPrecioMayor;
     private javax.swing.JTextField txtPrecioProdLista;
     // End of variables declaration//GEN-END:variables
 }
